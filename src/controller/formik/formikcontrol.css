@@ -1,0 +1,64 @@
+/* .formInput{
+ display: flex;
+ justify-content: space-between;
+} */
+
+/* .controlWrap{
+    display: flex;
+    flex-direction: column;
+} */
+
+/* .controlWrap input, textarea{
+    width: 100%;
+    min-height: 1.6rem;
+    border: 1px solid rgb(255, 215, 215);;
+    align-items: center;
+    display: flex;    
+    font-size: small;
+    padding: 0;
+    border-radius: 5px;
+    text-align: center;
+} */
+
+/* input:focus{
+
+    outline: none;
+}    */
+
+/* .userPhoto{
+    width: 12rem;
+    height: 14rem;
+    object-fit: cover;
+    border: 1px solid grey;
+    border-radius: 0.5rem;
+} */
+
+/* .formInputRight{
+    width: 100%;
+    text-align: center;
+    margin: 0.8rem 0rem 0rem 1.6rem;
+    padding: 0.2rem 0rem;
+    flex: 1;
+} */
+
+
+
+.uploadButton{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 11rem;
+    color: white;
+    margin: auto;
+    border-radius: 0.4rem;
+    border: 1px solid rgb(85, 85, 255);
+    background-color: rgb(52, 83, 255);
+    outline: none;
+    cursor: pointer;
+    padding: 0.1rem 0.4rem;
+}
+
+.uploadButton:hover{
+    background-color: rgb(0, 27, 179);
+}

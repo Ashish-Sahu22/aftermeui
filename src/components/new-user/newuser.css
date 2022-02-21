@@ -1,0 +1,30 @@
+.newUserForm{
+    margin: 1.2rem;
+    padding: 1.2rem;
+    }
+
+fieldset{
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+
+.arrayInputs{
+        margin-bottom: 24px;
+    }
+
+    /* .childsInputs>fieldset{
+        padding: 16px;
+        padding-bottom: 24px;
+        margin: 0px 0px 12px 0px ;
+    } */
+
+.formInput{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; 
+    } 
+
+
+
+

@@ -1,0 +1,87 @@
+[
+    {
+        "id": 1,
+        "link": "userregistration",
+        "text": "User Registration",
+        "icon":"AppRegistrationSharpIcon"
+    },
+    {
+        "id": 2,
+        "link": "personclose",
+        "text": "Person Close ",
+        "icon":"AppRegistrationSharpIcon" 
+    },
+    {
+        "id": 3,
+        "link": "medicalhistory",
+        "text": "Medical History",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 4,
+        "link": "readyref",
+        "text": "Ready Reference",
+        "icon":"AppRegistrationSharpIcon"
+    },
+    {
+        "id": 5,
+        "link": "iddetails",
+        "text": "Id Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 6,
+        "link": "doclocation",
+        "text": "Document Location",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 7,
+        "link": "insurancedetails",
+        "text": "Insurance Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 8,
+        "link": "medpolicydetails",
+        "text": "Mediclaims",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 9,
+        "link": "fireinsurance",
+        "text": "Fire Insurance",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 11,
+        "link": "accidentinsurance",
+        "text": "Accidental Insurance",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 12,
+        "link": "amcswarranty",
+        "text": "Amcs & Warranty",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 13,
+        "link": "bankaccount",
+        "text": "Bank Accounts",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 14,
+        "link": "ecsmandates",
+        "text": "ECS Mandates Table",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 28,
+        "link": "admin",
+        "text": "administrator",
+        "icon": "AppRegistrationSharpIcon"
+    }
+    
+]
