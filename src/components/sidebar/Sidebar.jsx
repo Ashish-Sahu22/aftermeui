@@ -1,7 +1,7 @@
 import { Home } from '@mui/icons-material';
 import { display, flexbox } from '@mui/lab/node_modules/@mui/system';
 import { Container, Typography, styled, CssBaseline, Divider } from '@mui/material';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import NavData from '../../data/navdata.json';
 import { Link } from 'react-router-dom';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
@@ -11,12 +11,19 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EmailIcon from '@mui/icons-material/Email';
-// import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
+import './Sidebar.css'
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
+// import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
 // import { styled } from '@mui/system';
 
 
+
 const Sidebar = () => {
+    const ref = useRef();
+
+
     const Drawer = styled('div')(({ theme }) => ({
         color: theme.palette.primary.contrastText,
         backgroundColor: theme.palette.primary.main,
@@ -49,7 +56,11 @@ const Sidebar = () => {
         }
     }));
 
-
+    // function clickhandle(e) {
+    //     e.preventDefault();
+    //     console.log('You clicked submit.');
+    //   }
+    
     return (
         <>
             {/* <CssBaseline /> */}
@@ -106,21 +117,71 @@ const Sidebar = () => {
                     </DrawerItem>
                 </Link>
                 <Divider />
-
+                <SimpleBar style={{ maxHeight: 260 }} ref={ref}>                
                 {NavData.map((data, index) => (
-                    <Link to={data.link} style={{ textDecoration: "none" }} >
+                    <Link to={data.link} style={{ textDecoration: "none" }}>
                         <DrawerItem>
                             <DrawerIcon>
                                 <AppRegistrationRoundedIcon />
                             </DrawerIcon>
                             <DrawerText>
-                                <Typography > {data.text} </Typography>
+                                <Typography> {data.text} </Typography>
                             </DrawerText>
                         </DrawerItem>
                     </Link>
                 ))}
-
-                <Divider/>
+                  </SimpleBar>   
+                <Divider />
+                <Link to='/' style={{ textDecoration: "none" }} >
+                    <DrawerItem>
+                        <DrawerIcon>
+                            <HomeRoundedIcon />
+                        </DrawerIcon>
+                        <DrawerText>
+                            <Typography > Home </Typography>
+                        </DrawerText>
+                    </DrawerItem>
+                </Link>
+                <Link to='user' style={{ textDecoration: "none" }} >
+                    <DrawerItem>
+                        <DrawerIcon>
+                            <AccountCircleIcon />
+                        </DrawerIcon>
+                        <DrawerText>
+                            <Typography > User Account</Typography>
+                        </DrawerText>
+                    </DrawerItem>
+                </Link>
+                <Link to='admin' style={{ textDecoration: "none" }} >
+                    <DrawerItem>
+                        <DrawerIcon>
+                            <AdminPanelSettingsIcon />
+                        </DrawerIcon>
+                        <DrawerText>
+                            <Typography > Administrator </Typography>
+                        </DrawerText>
+                    </DrawerItem>
+                </Link>
+                <Link to='settings' style={{ textDecoration: "none" }} >
+                    <DrawerItem>
+                        <DrawerIcon>
+                            <SettingsIcon />
+                        </DrawerIcon>
+                        <DrawerText>
+                            <Typography > Settings </Typography>
+                        </DrawerText>
+                    </DrawerItem>
+                </Link>
+                <Link to='mail' style={{ textDecoration: "none" }} >
+                    <DrawerItem>
+                        <DrawerIcon>
+                            <EmailIcon />
+                        </DrawerIcon>
+                        <DrawerText>
+                            <Typography > Mailbox </Typography>
+                        </DrawerText>
+                    </DrawerItem>
+                </Link>
 
 
             </Drawer>

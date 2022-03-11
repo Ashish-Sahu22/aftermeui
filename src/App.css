@@ -2,6 +2,22 @@
   text-align: center;
 } */
 
+/* .divcont{
+  display: flex;
+  background-color: DodgerBlue;
+  height:fit-content;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+  padding: 20px;
+}
+
+.divcont>div{
+  width: 30%;
+  background-color: #f1f1f1;
+  text-align: center;
+  word-wrap: break-word;
+} */
 
 .App-logo {
   height: 40vmin;

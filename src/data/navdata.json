@@ -1,44 +1,44 @@
 [
     {
         "id": 1,
-        "link": "userregistration",
-        "text": "User Registration",
-        "icon":"AppRegistrationSharpIcon"
-    },
-    {
-        "id": 2,
         "link": "personclose",
         "text": "Person Close ",
         "icon":"AppRegistrationSharpIcon" 
     },
     {
-        "id": 3,
+        "id": 2,
         "link": "medicalhistory",
         "text": "Medical History",
         "icon": "AppRegistrationSharpIcon"
     },
     {
-        "id": 4,
+        "id": 3,
         "link": "readyref",
         "text": "Ready Reference",
         "icon":"AppRegistrationSharpIcon"
     },
     {
-        "id": 5,
+        "id": 4,
         "link": "iddetails",
         "text": "Id Details",
         "icon": "AppRegistrationSharpIcon"
     },
     {
-        "id": 6,
+        "id": 5,
         "link": "doclocation",
         "text": "Document Location",
         "icon": "AppRegistrationSharpIcon"
     },
     {
-        "id": 7,
+        "id": 6,
         "link": "insurancedetails",
         "text": "Insurance Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 7,
+        "link": "vehicleinsurance",
+        "text": "Vehicle Insurance",
         "icon": "AppRegistrationSharpIcon"
     },
     {
@@ -78,7 +78,169 @@
         "icon": "AppRegistrationSharpIcon"
     },
     {
+        "id": 15,
+        "link": "loandetails",
+        "text": "Loan Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 16,
+        "link": "fixedrecrdeposits",
+        "text": "Fixed/Recurring Deposit",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 17,
+        "link": "sharebonds",
+        "text": "Share Bonds",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 18,
+        "link": "tradingaccount",
+        "text": "Trading Account",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 19,
+        "link": "mutualfunddetails",
+        "text": "Mutual Fund",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 20,
+        "link": "creditdebit",
+        "text": "Credit/Debit Cards",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 21,
+        "link": "debtliabilities",
+        "text": "Debt/Liabilities",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 22,
+        "link": "walletdetails",
+        "text": "Wallet Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 23,
+        "link": "locker",
+        "text": "Locker",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 24,
+        "link": "ppfaccount",
+        "text": "PPF Account",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 25,
+        "link": "pensionaccount",
+        "text": "Pension Account",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 26,
+        "link": "debitcarddetails",
+        "text": "Debit Cards",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 27,
+        "link": "creditcarddetails",
+        "text": "Credit Cards",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
         "id": 28,
+        "link": "pancarddetails",
+        "text": "PAN Cards",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 29,
+        "link": "passportdetails",
+        "text": "Passport Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 30,
+        "link": "electricwatermeter",
+        "text": "Electric/Water Meter",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 31,
+        "link": "gaspipeline",
+        "text": "Gas Pipeline",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 32,
+        "link": "cylinderagency",
+        "text": "Cylinder Agency",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 33,
+        "link": "landlinedetails",
+        "text": "Landline Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 34,
+        "link": "drivinglicence",
+        "text": "Driving Licence",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 35,
+        "link": "rationcard",
+        "text": "Ration-Card Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 36,
+        "link": "aadharcard",
+        "text": "Aadhar Card Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 37,
+        "link": "electioncard",
+        "text": "Election Card Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 38,
+        "link": "incometax",
+        "text": "Income Tax Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 39,
+        "link": "housedetails",
+        "text": "House Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 40,
+        "link": "importantdates",
+        "text": "Important Dates",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 41,
+        "link": "will",
+        "text": "Will Details",
+        "icon": "AppRegistrationSharpIcon"
+    },
+    {
+        "id": 65,
         "link": "admin",
         "text": "administrator",
         "icon": "AppRegistrationSharpIcon"

@@ -60,13 +60,15 @@ const DrivingLicence = () => {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        drivingLicence: Yup.array(Yup.object({
+            name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+            licenceNo: Yup.string().required('Mandatory Field!').min(15, 'Invalid Input!'),
+            authority:  Yup.string().required('Mandatory Field!').min(15, 'Invalid Authority!'),
+            issueDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            validFrom: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            validTill: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            remarksBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Input!'),
+        })) 
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -147,7 +149,7 @@ const DrivingLicence = () => {
                                                                         <FormikControl control='date' label='Valid Till' name={`drivingLicence[${index}].validTill`} placeholder='Submit Valid Till' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
-                                                                        <FormikControl control='textarea' label='Remarks' name={`drivingLicence[${index}].remarksBloodGroup`} placeholder='Submit Remarks/BloodGroup' />
+                                                                        <FormikControl control='textarea' label='Blood Group' name={`drivingLicence[${index}].remarksBloodGroup`} placeholder='Submit Remarks/BloodGroup' />
                                                                     </Grid>
 
                                                                     {

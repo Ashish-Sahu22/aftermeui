@@ -31,18 +31,19 @@ function Will() {
     }, [])
 
     const checkboxOption = [{
-        attorneyExecutedFor: [{
-            val: 'son',
-            key: 'Son',
-        },
-        {
-            val: 'spouse',
-            key: 'Spouse',
-        },
-        {
-            val: 'other',
-            key: 'Other',
-        }
+        attorneyExecutedFor: [
+            {
+                val: 'son',
+                key: 'Son',
+            },
+            {
+                val: 'spouse',
+                key: 'Spouse',
+            },
+            {
+                val: 'other',
+                key: 'Other',
+            }
         ],
     }]
 
@@ -68,12 +69,16 @@ function Will() {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // password: Yup.string().required('Please Submit your Password!').min(8, 'Invalid Password! Submit Valid Password'),
+        will: Yup.object({
+            executedOn: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            keptAt: Yup.string().required('Mandatory Field!').min(3, 'Mandatory Field!'),
+        }),
+        attorney: Yup.object({
+            executedFor: Yup.array().min(1, 'Select an option!'),
+            poa: Yup.string().required('Mandatory Field!').min(3, 'Mandatory Field!'),
+            deedExecutedOn: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            detailsFile: Yup.string().required('Mandatory Field!').min(3, 'Mandatory Field!'),
+        }),
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -107,7 +112,7 @@ function Will() {
             <div className='newUserForm'>
 
                 <Paper elevation={6} style={{ padding: 50, margin: 40 }}>
-                <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>WILL / POA</Typography>
+                    <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>WILL / POA</Typography>
 
                     <Formik
                         initialValues={initialValues}
@@ -138,7 +143,7 @@ function Will() {
                                                                 variant="standard"
                                                                 name='will.executedOn'
                                                                 type="date"
-                                                                textField={{variant: 'standard' }}
+                                                                textField={{ variant: 'standard' }}
                                                             // placeholder='My Will Is Executed On'
                                                             />
                                                         </Grid>
@@ -198,14 +203,14 @@ function Will() {
                                                         <Grid item xs={4}>
                                                             <label htmlFor='attorney.deedExecutedOn'><Typography variant='h6' sx={{}}>Deed Executed on</Typography></label>
                                                         </Grid>
-                                                        <Grid item xs={8} className='datewidth'> 
+                                                        <Grid item xs={8} className='datewidth'>
                                                             <Field
                                                                 fullWidth
                                                                 component={DatePicker}
                                                                 variant="standard"
                                                                 type="date"
                                                                 name='attorney.deedExecutedOn'
-                                                                textField={{variant: 'standard' }}
+                                                                textField={{ variant: 'standard' }}
                                                             // placeholder='Submit Copy of the Will is Kept At'
                                                             />
                                                         </Grid>

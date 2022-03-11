@@ -48,7 +48,10 @@ import UserRegistration from './components/userregistration/UserRegistration.for
 import Login from './components/userregistration/Login.form';
 import ImportantDates from './components/forms/ImportantDates.form';
 import Will from './components/will/Will';
+import VehicleInsurance from './components/forms/VehicleInsurance.form';
+
 import { FlashOnOutlined } from '@mui/icons-material';
+
 
 function App() {
 
@@ -68,6 +71,7 @@ function App() {
           <Route path="iddetails" element={<IdDetails />} />
           <Route path="doclocation" element={<DocLocation />} />
           <Route path="insurancedetails" element={<InsuranceDetails />} />
+          <Route path="vehicleinsurance" element={<VehicleInsurance />} />
           <Route path="medpolicydetails" element={<MedPolicyDetails />} />
           <Route path="testcode" element={<TestCode />} />
           <Route path="fireinsurance" element={<FireInsurance />} />
@@ -102,7 +106,6 @@ function App() {
           <Route path="housedetails" element={<HouseDetails />} />
           <Route path="importantdates" element={<ImportantDates />} />
           <Route path="will" element={<Will />} />
-
 
           <Route path=":id" element={<Error404 />} />
         </Route>

@@ -38,13 +38,16 @@ function EcsMandates() {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        ecs: Yup.array(Yup.object({
+            ecsFavour: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+            amtPeriodicity: Yup.string().required('Mandatory Field!').min(15, 'Invalid Number!'),
+            debitAccDetails:  Yup.object({
+                bankBranch: Yup.string().required('Mandatory Field!').min(15, 'Invalid Input!'),
+                accountNo: Yup.string().required('Mandatory Field!').matches(regex.bankAccountNo, 'Invalid Account Number!'),
+            }),
+            startDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            endDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        })) 
     });
 
     const onSubmit = async (values, onSubmitProps) => {

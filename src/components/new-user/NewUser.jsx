@@ -64,13 +64,43 @@ function NewUser() {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        userName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        userDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        userTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        userPob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        userAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        userMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        userEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+        userBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+        userEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        userOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        userQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        spouse: Yup.object({
+            spouseName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            spouseDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            spouseTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            spousePob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            spouseAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            spouseMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+            spouseEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+            spouseBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+            spouseEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+            spouseOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            spouseQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        }),
+        childs: Yup.array(Yup.object({
+            name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            dob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            tob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            pob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            anniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            mobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+            email: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+            bloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+            emergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+            organization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            qualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {

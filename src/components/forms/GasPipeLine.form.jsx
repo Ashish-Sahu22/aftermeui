@@ -33,19 +33,19 @@ const GasPipeLine = () => {
             name: '',
             houseDetails: '',
             meterNo: '',
-            consumerNo: '',
+            customerNo: '',
             depositAmt: '',
         }]
     }
 
     const validationSchema = Yup.object({
-        // docName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        gaspipeline: Yup.array(Yup.object({
+            name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+            houseDetails: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
+            meterNo: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
+            customerNo: Yup.string().required('Mandatory Field!').min(10, 'Invalid Input!'),
+            depositAmt: Yup.string().required('Mandatory Field!').matches(regex.amount,"Invalid Input!"),
+        })) 
     });
 
 
@@ -102,7 +102,7 @@ const GasPipeLine = () => {
                                                                         <FormikControl control='input' label='Meter Number' name={`gaspipeline[${index}].meterNo`} placeholder='Submit Meter/Route Number' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
-                                                                        <FormikControl control='input' label='Customer No.' name={`gaspipeline[${index}].consumerNo`} placeholder='Submit Consumer Number' />
+                                                                        <FormikControl control='input' label='Customer No.' name={`gaspipeline[${index}].customerNo`} placeholder='Submit Consumer Number' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Deposit Rs.' name={`gaspipeline[${index}].depositAmt`} placeholder='Submit Deposit Amount' />

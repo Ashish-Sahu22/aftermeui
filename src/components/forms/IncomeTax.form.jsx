@@ -58,13 +58,13 @@ const IncomeTax = () => {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        incomeTax: Yup.array(Yup.object({
+            assessmentYear: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            grossIncome: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
+            lastReturnFiled: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            assessmentDone: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            refundAmountDue: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
+        }))         
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -109,7 +109,7 @@ const IncomeTax = () => {
                                                                 <legend>{`Tax-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
-                                                                        <FormikControl control='input' type='text' label='Assessment Year' name={`incomeTax[${index}].assessmentYear`} placeholder='Submit Assessment Year' />
+                                                                        <FormikControl control='date' type='text' label='Assessment Year' name={`incomeTax[${index}].assessmentYear`} placeholder='Submit Assessment Year' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Total Gross Income' name={`incomeTax[${index}].grossIncome`} placeholder='Submit Total Gross Income' />
@@ -118,7 +118,7 @@ const IncomeTax = () => {
                                                                         <FormikControl control='date' label='Last Return Filed' name={`incomeTax[${index}].lastReturnFiled`} placeholder='Submit Last Return Filed' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
-                                                                        <FormikControl control='input' label='Assessment Done' name={`incomeTax[${index}].assessmentDone`} placeholder='Submit Assessment Done, If Any' />
+                                                                        <FormikControl control='date' label='Assessment Done' name={`incomeTax[${index}].assessmentDone`} placeholder='Submit Assessment Done, If Any' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Refund Amount Due' name={`incomeTax[${index}].refundAmountDue`} placeholder='Submit Refund Amount Due, If Any' />

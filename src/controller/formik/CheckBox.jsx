@@ -15,13 +15,12 @@ function CheckBox(props) {
                         <Field
                             type="checkbox"
                             component={Checkbox}
-                            name="attorney.executedFor"
+                            variant="standard"
                             value={checkboxOptions.val}
                             name={name}
                         />
                         {checkboxOptions.key}
                     </label>
-
                 ))}
             <ErrorMessage name={name} component={ErrorMsg} />
         </div>

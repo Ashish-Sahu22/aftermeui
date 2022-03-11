@@ -67,11 +67,14 @@ const DocLocation = () => {
         docLocation: [{
             docName: '',
             docLoc: '',
-
         }]
     }
 
     const validationSchema = Yup.object({
+        docLocation: Yup.array(Yup.object({
+            docName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            docLoc: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+        }))    
         // docName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
         // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
         // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),

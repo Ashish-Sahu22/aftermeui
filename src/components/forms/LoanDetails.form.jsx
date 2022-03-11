@@ -59,13 +59,14 @@ const LoanDetails = () => {
     }
 
     const validationSchema = Yup.object({
-        // userName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        loanDetails: Yup.array(Yup.object({
+            loanType: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            bankBranch: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            accountNo: Yup.string().required('Mandatory Field!').matches(regex.bankAccountNo, 'Invalid Input'),
+            borrowers: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            loanAmt: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
+            advDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        }))    
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -82,7 +83,7 @@ const LoanDetails = () => {
             <div className='newUserForm'>
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
-                    <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>loanDetails Policy Details</Typography>
+                    <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Loan Details</Typography>
 
                     <Formik
                         initialValues={initialValues}
@@ -107,7 +108,7 @@ const LoanDetails = () => {
                                                     {loanDetails.map((childData, index, array) => (
                                                         <div className='childsInputs' key={`loanDetails-${index}`}>
                                                             <fieldset>
-                                                                <legend>{`Policy-${index + 1}`}</legend>
+                                                                <legend>{`Loan-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Type of Loan' name={`loanDetails[${index}].loanType`} placeholder='Submit Type of Loan' />

@@ -77,24 +77,26 @@ const FireInsurance = () => {
     }
 
     const validationSchema = Yup.object({
-        // docName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        fireInsurance: Yup.array(Yup.object({
+            propNomineeName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+            policyCompNo: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            amtInsured: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
+            risksCovered: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            issueMaturityDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            premium: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            remarks: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
+        }))
     });
 
-    
+
 
     const onSubmit = async (values, onSubmitProps) => {
 
-        await axios.post("http://localhost:8080/afterme/api/addfireinsurance", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://localhost:8080/afterme/api/addfireinsurance",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -142,7 +144,7 @@ const FireInsurance = () => {
                                                     {fireInsurance.map((dataItem, index, array) => (
                                                         <div className='childsInputs' key={`fireIns-${index}`}>
                                                             <fieldset>
-                                                                <legend>{`Policy-${index + 1}`}</legend>
+                                                                <legend>{`Insurance-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='textarea' label='Property & Nominee Name ' name={`fireInsurance[${index}].propNomineeName`} placeholder='Submit Property and Nominee Name' />

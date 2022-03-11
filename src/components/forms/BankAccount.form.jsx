@@ -68,6 +68,7 @@ const BankAccount = () => {
         bankAccount: [{
             accountName: '',
             bankName: '',
+            accountNo:'',
             branch: '',
             ifscCode: '',
             accountType: '',
@@ -79,13 +80,17 @@ const BankAccount = () => {
     }
 
     const validationSchema = Yup.object({
-        // docName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
-        // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
-        // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
-        // email: Yup.string().matches(regex.email, 'Invalid Email!').required('Email is Mandatory Field!').min(3, 'Invalid Email!'),
-        // mobile: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        // dob: Yup.date().required('Submit your Date of Birth!'),
-        // address: Yup.string().required('Please Submit your Address!').min(20, 'Invalid Address! Submit your Complete Address'),
+        bankAccount: Yup.array(Yup.object({
+            accountName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            bankName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            branch: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            accountNo: Yup.string().required('Mandatory Field').matches(regex.bankAccountNo,'Invalid Input'),
+            ifscCode: Yup.string().required('Mandatory Field!').min(11, 'Invalid Value!'),
+            accountType: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            operatingInst: Yup.string().required('Mandatory Field!').min(5, 'Invalid Value!'),
+            nominee: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
+            specimenSign: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        }))
     });
 
 
@@ -152,6 +157,9 @@ const BankAccount = () => {
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Branch' name={`bankAccount[${index}].branch`} placeholder='Submit Branch Name' />
+                                                                    </Grid>
+                                                                    <Grid item xs={12} sm={6} md={4}>
+                                                                        <FormikControl control='input' label='Account Number' name={`bankAccount[${index}].accountNo`} placeholder='Submit Account Number' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Ifsc Code' name={`bankAccount[${index}].ifscCode`} placeholder='Submit Ifsc Code' />
