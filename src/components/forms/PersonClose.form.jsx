@@ -10,11 +10,69 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const PersonClose = () => {
 
     const [userRegister, setUserRegister] = useState({})
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Close Person";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getclosetome';
+    const deleteParam = 'deleteclosetome';
+    const updateParam = 'updateclosetome';
+    
+    
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'relation',
+          headerName: 'Relation',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'address',
+            headerName: 'Address',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'contact',
+          headerName: 'Contact',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'reasonToClose',
+            headerName: 'Reason To Close',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     const dropDownOption = [{
         relation: [{
@@ -48,6 +106,8 @@ const PersonClose = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         closeToMe: [{
             name: '',
             relation: '',
@@ -63,16 +123,16 @@ const PersonClose = () => {
             relation: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             address: Yup.string().required('Mandatory Field!').min(15, 'Invalid Address!'),
             contact: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-            reasonToClose:Yup.string().required('Mandatory Field!').min(5, 'Invalid Input'),
-            }))
+            reasonToClose: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input'),
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addclosetome", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://localhost:8080/afterme/api/addclosetome",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -100,7 +160,8 @@ const PersonClose = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Persons Close to My <FavoriteIcon fontSize='large' color='error' /></Typography>
-
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -126,6 +187,9 @@ const PersonClose = () => {
                                                             <fieldset>
                                                                 <legend>{`Person-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Name' name={`closeToMe[${index}].name`} placeholder='Submit Name of Person' />
                                                                     </Grid>
@@ -167,7 +231,7 @@ const PersonClose = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

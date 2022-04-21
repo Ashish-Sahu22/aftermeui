@@ -13,12 +13,24 @@ const Main = () => {
     const [userExist, setUserExist] = useState(true);
 
     useEffect(() => {
-        const userInfo = localStorage.getItem("userInfo");
         document.title = "Home";
-        if (userInfo == null) {
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+
+        const session = localStorage.getItem("session");
+        const userId = localStorage.getItem("id");
+
+        if(storageToken==null && storageUserId==null){
+            localStorage.removeItem("session");
+            localStorage.removeItem("id");
             navigate('/login');
             setUserExist(false);
         }
+        
+        // if (session == null && userId == null) {
+        //     navigate('/login');
+        //     setUserExist(false);
+        // }
     }, [])
 
     return (<>

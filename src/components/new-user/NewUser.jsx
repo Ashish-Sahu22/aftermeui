@@ -17,13 +17,30 @@ import Box from '@mui/material/Box';
 
 function NewUser() {
 
+    const [userRegister, setUserRegister] = useState({})
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+
     useEffect(() => {
         document.title = "Registration";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
     }, [])
 
-    const [userRegister, setUserRegister] = useState({})
+
+    // const authAxios = axios.create({
+    //     baseURL: 'http://1634-60-254-104-154.ngrok.io/afterme/api/',
+    //     headers: {
+    //         "token" : token,
+    //     }
+    // })
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         userName: '',
         userDob: '',
         userTob: '',
@@ -64,59 +81,57 @@ function NewUser() {
     }
 
     const validationSchema = Yup.object({
-        userName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-        userDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-        userTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-        userPob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-        userAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-        userMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-        userEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
-        userBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
-        userEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-        userOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-        userQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
-        spouse: Yup.object({
-            spouseName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            spouseDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            spouseTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            spousePob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            spouseAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            spouseMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-            spouseEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
-            spouseBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
-            spouseEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-            spouseOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            spouseQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
-        }),
-        childs: Yup.array(Yup.object({
-            name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            dob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            tob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            pob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            anniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            mobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-            email: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
-            bloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
-            emergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
-            organization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-            qualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
-        }))
+        // userName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        // userDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        // userTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        // userPob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        // userAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        // userMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        // userEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+        // userBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+        // userEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        // userOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        // userQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        // spouse: Yup.object({
+        //     spouseName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     spouseDob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     spouseTob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     spousePob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     spouseAnniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     spouseMobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        //     spouseEmail: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+        //     spouseBloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+        //     spouseEmergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        //     spouseOrganization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     spouseQualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        // }),
+        // childs: Yup.array(Yup.object({
+        //     name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     dob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     tob: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     pob: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     anniversary: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     mobNumber: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        //     email: Yup.string().required('Email Mandatory Field!').matches(regex.email, 'Invalid Email!'),
+        //     bloodGroup: Yup.string().required('Mandatory Field!').matches(regex.bloodgroup, 'Invalid Blood Group!'),
+        //     emergency: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number!'),
+        //     organization: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        //     qualification: Yup.string().required('Mandatory Field!').min(2, 'Invalid Input!'),
+        // }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://a011-2405-201-401c-11a0-5c9-9804-e2c9-df50.ngrok.io/afterme/api/addSelf",
-            values,
-            // {
-            //     headers:{"Access-Control-Allow-Origin": "*"}
-            // }
+        await axios.post("http://c237-60-254-104-154.ngrok.io/afterme/api/addSelf", values
         ).then(
             (response) => {
                 console.log("success", response);
+                // console.log("success", response.headers.token);
                 // toast.success('Your Registration Successfully Done! ',{
                 //     position: toast.POSITION.TOP_CENTER,
                 // });             
             }, (error) => {
                 console.log("error :", error);
+                // console.log("success", error.headers.token);
                 // toast.error('Something Went Wrong! Try Again Sometime!', {
                 //     position:toast.POSITION.TOP_CENTER})
             }
@@ -125,8 +140,10 @@ function NewUser() {
         const data = JSON.stringify(values);
         console.log(data);
         console.log(values.userName);
+        console.log('usertoken :', token);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
+
     };
 
 
@@ -152,6 +169,8 @@ function NewUser() {
                                     <fieldset>
                                         <legend> Me</legend>
                                         <div className='formInput'>
+                                            <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token}/>
+                                            <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId}/>
                                             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                 <Grid item xs={12} sm={6} md={3}>
                                                     <FormikControl control='input' type='text' label='Name' name='userName' placeholder='Submit Name' />
@@ -311,7 +330,7 @@ function NewUser() {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }} >Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

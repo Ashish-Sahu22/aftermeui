@@ -10,10 +10,22 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 const CreditDebit = () => {
 
     const [userRegister, setUserRegister] = useState({})
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Credit Debit";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, [])
 
     const dropDownOption = [{
         crDrType: [{
@@ -28,7 +40,52 @@ const CreditDebit = () => {
 
     }]
 
+    const getParam = 'getcrdr';
+    const deleteParam = 'deletecrdr';
+    const updateParam = 'updatecrdr';
+    
+    const dataColumn = [{
+          field: 'nameOfCrDr',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'crDr',
+          headerName: 'Cr./Dr.',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'amount',
+            headerName: 'Amount',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'date',
+          headerName: 'Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'dueDate',
+            headerName: 'Due Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'inttRate',
+            headerName: 'Intrest Rate',
+            width: 110,
+            editable: true,
+          },
+                 
+      ];
+
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         creditDebit: [{
             nameOfCrDr: '',
             crDr: '',
@@ -46,18 +103,18 @@ const CreditDebit = () => {
             amount: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
             date: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             dueDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            inttRate: Yup.number().required('Mandatory Field!').min(1, 'Invalid Value!').max(100,'Invalid Input!'),
-        }))    
+            inttRate: Yup.number().required('Mandatory Field!').min(1, 'Invalid Value!').max(100, 'Invalid Input!'),
+        }))
     });
 
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addcrdr", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://localhost:8080/afterme/api/addcrdr",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -81,7 +138,8 @@ const CreditDebit = () => {
     return (
         <div className='newUserWrap'>
             <div className='newUserForm'>
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Credit / Debit Details</Typography>
 
                     <Formik
@@ -108,6 +166,9 @@ const CreditDebit = () => {
                                                             <fieldset>
                                                                 <legend>{`Cr/Dr-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='select' type='select' label='Cr/Dr' name={`creditDebit[${index}].crDr`} placeholder='Submit Document Type' options={dropDownOption[0].crDrType} />
                                                                     </Grid>
@@ -153,7 +214,7 @@ const CreditDebit = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

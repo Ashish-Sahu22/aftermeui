@@ -10,11 +10,79 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const MedPolicyDetails = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Medical History";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getMediClaim';
+    const deleteParam = 'deleteMedi';
+    const updateParam = 'updateMediClaim';
+    
+    const dataColumn = [{
+          field: 'claimName',
+          headerName: 'Claim Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'claimType',
+          headerName: 'Claim Type',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'policyNo',
+            headerName: 'Policy No',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'amtInsured',
+          headerName: 'Amount Insured',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'policyStartDate',
+            headerName: 'Policy Start Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'policyDueDate',
+            headerName: 'Policy Due Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'premium',
+            headerName: 'Premium',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +116,8 @@ const MedPolicyDetails = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         mediclaim: [{
             claimName: '',
             claimType: '',
@@ -68,15 +138,15 @@ const MedPolicyDetails = () => {
             policyStartDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             policyDueDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             premium: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
-        }))    
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://b9b7-2405-201-401c-11a0-583d-f43c-45a3-e181.ngrok.io/afterme/api/addMediClaim", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://b9b7-2405-201-401c-11a0-583d-f43c-45a3-e181.ngrok.io/afterme/api/addMediClaim",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -101,9 +171,9 @@ const MedPolicyDetails = () => {
     return (
         <div className='newUserWrap'>
             <div className='newUserForm'>
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Mediclaim Policy Details</Typography>
-
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -130,6 +200,9 @@ const MedPolicyDetails = () => {
                                                             <fieldset>
                                                                 <legend>{`Policy-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Claim Name' name={`mediclaim[${index}].claimName`} placeholder='Submit Policy Name' />
                                                                     </Grid>
@@ -177,7 +250,7 @@ const MedPolicyDetails = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

@@ -10,11 +10,68 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const RationCardDetails = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Ration Card Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getrationcard';
+    const deleteParam = 'deleterationcard';
+    const updateParam = 'updaterationcard';
+    
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'cardNo',
+          headerName: 'Card Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'authority',
+            headerName: 'Authority',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'issueDate',
+          headerName: 'Issue Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'renewalDue',
+            headerName: 'Renewal Due',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +105,8 @@ const RationCardDetails = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         rationCard: [{
             name: '',
             cardNo: '',
@@ -67,26 +126,26 @@ const RationCardDetails = () => {
         }))
     });
 
-    
+
     const onSubmit = async (values, onSubmitProps) => {
         await axios.post("http://localhost:8080/afterme/api/addrationcard",
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
-    ).then((response) => {
-        console.log("success", response);
-        // toast.success('Your Registration Successfully Done! ',{
-        //     position: toast.POSITION.TOP_CENTER,
-        // });       
-        // setError(response);
-    }, (error) => {
-        console.log("error :", error);
-        // setError(error.data);
-        // toast.error('Something Went Wrong! Try Again Sometime!', {
-        //     position:toast.POSITION.TOP_CENTER})
-    }
-    )
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then((response) => {
+            console.log("success", response);
+            // toast.success('Your Registration Successfully Done! ',{
+            //     position: toast.POSITION.TOP_CENTER,
+            // });       
+            // setError(response);
+        }, (error) => {
+            console.log("error :", error);
+            // setError(error.data);
+            // toast.error('Something Went Wrong! Try Again Sometime!', {
+            //     position:toast.POSITION.TOP_CENTER})
+        }
+        )
 
         const data = JSON.stringify(values);
         console.log(data);
@@ -100,6 +159,7 @@ const RationCardDetails = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Ration Card Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -126,6 +186,9 @@ const RationCardDetails = () => {
                                                             <fieldset>
                                                                 <legend>{`Card-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Name' name={`rationCard[${index}].name`} placeholder='Submit Name' />
                                                                     </Grid>
@@ -167,7 +230,7 @@ const RationCardDetails = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

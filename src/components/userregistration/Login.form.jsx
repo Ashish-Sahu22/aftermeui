@@ -4,13 +4,13 @@ import { Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FormikControl from '../../controller/formik/FormikControl';
-import { regex } from '../../constant/regexconstant'
+import { regex } from '../../constant/regexconstant';
 import '../../controller/formik/formikcontrol.css';
 import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import { height, margin } from '@mui/system';
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
@@ -29,8 +29,9 @@ function Login() {
 
     useEffect(() => {
         document.title = "Login";
-        const userInfo = localStorage.getItem("userInfo");
-        if (userInfo) {
+        const userInfo = localStorage.getItem("session");
+        const userId = localStorage.getItem("id");
+        if (userInfo && userId) {
             navigate('/')
         }
     }, [])
@@ -54,15 +55,17 @@ function Login() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-
-        await axios.post("http://localhost:8080/afterme/api/adduser",
+        await axios.post("http://localhost:8080/afterme/api/loginUser" ,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
             // }
         ).then((response) => {
             console.log("success", response);
-            localStorage.setItem("userInfo", JSON.stringify(response.data))
+            localStorage.setItem("session", JSON.stringify(response.data[0]));
+            localStorage.setItem("id", JSON.stringify(response.data[1]));
+            window.sessionStorage.setItem('session', JSON.stringify(response.data[0]));
+            window.sessionStorage.setItem('id', JSON.stringify(response.data[1]));       
             // toast.success('Your Registration Successfully Done! ',{
             //     position: toast.POSITION.TOP_CENTER,
             // });       

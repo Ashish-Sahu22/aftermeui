@@ -10,11 +10,74 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const PassportDetails = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Passport Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getPassportDetails';
+    const deleteParam = 'deletePassport';
+    const updateParam = 'updatePassport';
+    
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'passportNo',
+          headerName: 'Passport Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'issueDate',
+            headerName: 'Issue Date',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'expiryDate',
+          headerName: 'Expiry Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'issuingAuthority',
+            headerName: 'Issuing Authority',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'previousPassports',
+            headerName: 'Previous Passports',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +111,8 @@ const PassportDetails = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         passportDetails: [{
             name: '',
             passportNo: '',
@@ -66,10 +131,34 @@ const PassportDetails = () => {
             expiryDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             issuingAuthority: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             previousPassports: Yup.string().required('Mandatory Field!').matches(regex.passport, 'Invalid Input'),
-            }))
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        const token = window.sessionStorage.getItem('token');
+        console.log('usertoken :', token)
+        await axios.post("http://131c-60-254-104-154.ngrok.io/afterme/api/addPassport",
+            values
+            // { 
+            //     headers: {
+            //         "Content-Type":"application/json",
+            //         "token": token
+            //     } 
+            // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                console.log("success", response.headers.token);
+                // toast.success('Your Registration Successfully Done! ',{
+                //     position: toast.POSITION.TOP_CENTER,
+                // });             
+            }, (error) => {
+                console.log("error :", error);
+                // toast.error('Something Went Wrong! Try Again Sometime!', {
+                //     position:toast.POSITION.TOP_CENTER})
+            }
+        )
+
         const data = JSON.stringify(values);
         console.log(data);
         onSubmitProps.setSubmitting(false);
@@ -83,6 +172,7 @@ const PassportDetails = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Passport Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -108,6 +198,8 @@ const PassportDetails = () => {
                                                         <div className='childsInputs' key={`passportDetails-${index}`}>
                                                             <fieldset>
                                                                 <legend>{`Passport-${index + 1}`}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Name' name={`passportDetails[${index}].name`} placeholder='Submit Name' />
@@ -153,7 +245,7 @@ const PassportDetails = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

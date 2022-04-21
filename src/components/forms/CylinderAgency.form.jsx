@@ -10,11 +10,62 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 
 const CylinderAgency = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Cylinder Agency";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, [])
+
+
+    const getParam = 'getbankaccount';
+    const deleteParam = 'deletebankaccount';
+    const updateParam = 'updatebankaccount';
+
+      
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'houseDetails',
+          headerName: 'House Details',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'consumerNo',
+            headerName: 'Consumer No',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'depositAmt',
+          headerName: 'Deposit Amount',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'phoneNoBook',
+            headerName: 'Booking Phone No',
+            width: 110,
+            editable: true,
+          },
+        
+      ];
 
     const dropDownOption = [{
         meter: [{
@@ -29,6 +80,8 @@ const CylinderAgency = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         cylinderAgency: [{
             name: '',
             houseDetails: '',
@@ -45,7 +98,7 @@ const CylinderAgency = () => {
             depositAmt: Yup.string().required('Mandatory Field!').matches(regex.amount, 'Invalid Amount!'),
             consumerNo: Yup.string().required('Mandatory Field!').min(17, 'Invalid Input!'),
             phoneNoBook: Yup.string().required('Mobile Number is Mandatory Field!').matches(regex.mobile, 'Invalid Number!').min(10, 'Submit 10 digits of valid mobile number!').max(10, 'Invalid Mobile Number! Submit 10 digit of Valid mobile number!'),
-        }))    
+        }))
     });
 
 
@@ -61,9 +114,9 @@ const CylinderAgency = () => {
         <div className='newUserWrap'>
             <div className='newUserForm'>
 
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Gas Cylinder Agency Service Details</Typography>
-
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -89,6 +142,9 @@ const CylinderAgency = () => {
                                                             <fieldset>
                                                                 <legend>{`Agency-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Name' name={`cylinderAgency[${index}].name`} placeholder='Submit Name' />
                                                                     </Grid>
@@ -135,7 +191,7 @@ const CylinderAgency = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

@@ -10,7 +10,8 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GridPro from '../userlist/GridPro'
+import GetList from '../userlist/GetList';
 
 const CreditCardDetails = () => {
 
@@ -57,6 +58,54 @@ const CreditCardDetails = () => {
         }]
     }
 
+    const getParam = 'getCreditCardDetails';
+    const deleteParam = 'deleteCreditCard';
+    const updateParam = 'updateCreditCard';
+
+      
+    const dataColumn = [
+        {
+          field: 'holderName',
+          headerName: 'Holder Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'bankName',
+          headerName: 'Bank Name',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'cardNo',
+            headerName: 'Card Number',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'validFrom',
+          headerName: 'Valid From',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'validThru',
+            headerName: 'Valid Through',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
     const validationSchema = Yup.object({
         creditCardDetails: Yup.array(Yup.object({
             holderName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
@@ -80,7 +129,8 @@ const CreditCardDetails = () => {
             <div className='newUserForm'>
             <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                 <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Credit Card Details</Typography>
-
+                <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    <GridPro/>
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}

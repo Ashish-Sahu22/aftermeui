@@ -10,11 +10,88 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const Locker = () => {
 
     const [userRegister, setUserRegister] = useState({})
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Locker Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getlockers';
+    const deleteParam = 'deletelockers';
+    const updateParam = 'updatelockers';
+
+      
+    const dataColumn = [{
+          field: 'bankBranch',
+          headerName: 'Bank Branch',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'lockerNo',
+          headerName: 'Locker Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'inNameOf',
+            headerName: 'In Name Of',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'code',
+          headerName: 'Code',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'rent',
+            headerName: 'Rent',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'rentRenewalDate',
+            headerName: 'Rent Renewal Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'nominee',
+            headerName: 'Nominee',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'contents',
+            headerName: 'Contents',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +125,8 @@ const Locker = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         locker: [{
             bankBranch: '',
             lockerNo: '',
@@ -106,6 +185,8 @@ const Locker = () => {
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Lockers</Typography>
 
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
@@ -131,6 +212,8 @@ const Locker = () => {
                                                             <fieldset>
                                                                 <legend>{`Locker-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='textarea' label='Bank Details' name={`locker[${index}].bankBranch`} placeholder='Submit Bank and Branch Name' />
                                                                     </Grid>
@@ -181,7 +264,7 @@ const Locker = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                             {/* </fieldset> */}
                         </Form>
                     }

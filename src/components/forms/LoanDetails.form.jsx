@@ -10,11 +10,75 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const LoanDetails = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Loan Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getLoanAccount';
+    const deleteParam = 'deleteLoanAccount';
+    const updateParam = 'updateLoanAccount';
+
+      
+    const dataColumn = [{
+          field: 'loanType',
+          headerName: 'Account Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'bankBranch',
+          headerName: 'Bank Name',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'accountNo',
+            headerName: 'Account No',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'borrowers',
+          headerName: 'Branch',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'loanAmt',
+            headerName: 'Loan Amount',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'advDate',
+            headerName: 'Advanced Date',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +112,8 @@ const LoanDetails = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         loanDetails: [{
             loanType: '',
             bankBranch: '',
@@ -84,6 +150,7 @@ const LoanDetails = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Loan Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -109,6 +176,8 @@ const LoanDetails = () => {
                                                         <div className='childsInputs' key={`loanDetails-${index}`}>
                                                             <fieldset>
                                                                 <legend>{`Loan-${index + 1}`}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Type of Loan' name={`loanDetails[${index}].loanType`} placeholder='Submit Type of Loan' />
@@ -153,7 +222,7 @@ const LoanDetails = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

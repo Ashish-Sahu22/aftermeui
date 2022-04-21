@@ -10,11 +10,22 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 
 const AccidentInsurance = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Accidental Insurance";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, [])
 
     const dropDownOption = [{
         docLoc: [{
@@ -65,6 +76,8 @@ const AccidentInsurance = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         accidentInsurance: [{
             insuredName: '',
             insuranceCompany: '',
@@ -75,6 +88,66 @@ const AccidentInsurance = () => {
             remarks: '',
         }]
     }
+
+
+    const getParam = 'getaccidentinsurance';
+    const deleteParam = 'deleteaccidentinsurance';
+    const updateParam = 'updateaccidentinsurance';
+
+      
+    const dataColumn = [{
+          field: 'insuredName',
+          headerName: 'Insured Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'insuranceCompany',
+          headerName: 'Company',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'sumInsured',
+            headerName: 'Sum Insured',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'risksCovered',
+          headerName: 'Risks Covered',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'policyPeriod',
+            headerName: 'Policy Period',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'premium',
+            headerName: 'Premium',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'remarks',
+            headerName: 'Remarks',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const validationSchema = Yup.object({
         accidentInsurance: Yup.array(Yup.object({
@@ -120,7 +193,7 @@ const AccidentInsurance = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Personal Accident Insurance Details</Typography>
-
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>    
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -145,6 +218,8 @@ const AccidentInsurance = () => {
                                                             <fieldset>
                                                                 <legend>{`Insurance-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Name of Insured(s)' name={`accidentInsurance[${index}].insuredName`} placeholder='Submit Name of Insured(s)' />
                                                                     </Grid>
@@ -193,7 +268,7 @@ const AccidentInsurance = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

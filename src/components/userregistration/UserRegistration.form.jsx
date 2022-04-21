@@ -56,7 +56,7 @@ function UserRegistration() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://b0ca-2405-201-401c-11a0-e5f3-6c79-3ec5-89d5.ngrok.io/afterme/api/adduser", 
+        await axios.post("http://localhost:8080/afterme/api/adduser", 
         values,
         // {
         //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -76,7 +76,7 @@ function UserRegistration() {
         )
         console.log(values);
         const data = JSON.stringify(values);
-        console.log(data);
+        console.log(values);
         console.log(values.userName);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();

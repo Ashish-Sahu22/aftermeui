@@ -11,6 +11,7 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import { margin, padding } from '@mui/system';
+import GetList from '../userlist/GetList';
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -22,9 +23,70 @@ function EcsMandates() {
         document.title = "Registration";
     }, [])
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "ECS Mandates";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getEcsMandate';
+    const deleteParam = 'deleteEcsMandate';
+    const updateParam = 'updateEcsManadate';
+
+      
+    const dataColumn = [{
+          field: 'ecsFavour',
+          headerName: 'ECS Favour',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'amtPeriodicity',
+          headerName: 'Amount Periodicity',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'debitAccDetails',
+            headerName: 'DebitAccount Details',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'startDate',
+            headerName: 'Start Date',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'endDate',
+            headerName: 'End Date',
+            width: 110,
+            editable: true,
+        },
+        
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         ecs: [{
             ecsFavour: '',
             amtPeriodicity: '',
@@ -41,13 +103,13 @@ function EcsMandates() {
         ecs: Yup.array(Yup.object({
             ecsFavour: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
             amtPeriodicity: Yup.string().required('Mandatory Field!').min(15, 'Invalid Number!'),
-            debitAccDetails:  Yup.object({
+            debitAccDetails: Yup.object({
                 bankBranch: Yup.string().required('Mandatory Field!').min(15, 'Invalid Input!'),
                 accountNo: Yup.string().required('Mandatory Field!').matches(regex.bankAccountNo, 'Invalid Account Number!'),
             }),
             startDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             endDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-        })) 
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -65,6 +127,7 @@ function EcsMandates() {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>ECS Mandates Tables</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -87,6 +150,8 @@ function EcsMandates() {
                                                             <legend>{`ECS-${index + 1}`}</legend>
 
                                                             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center', marginBottom: '20px' }}>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                 <Grid item xs={12} sm={6} md={6}>
                                                                     <FormikControl control='input' type='text' label='ECS Favouring' name={`ecs[${index}].ecsFavour`} placeholder='Submit Ecs Favouring' />
                                                                 </Grid>
@@ -137,7 +202,7 @@ function EcsMandates() {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

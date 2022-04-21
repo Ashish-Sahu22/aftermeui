@@ -10,11 +10,81 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const ShareBonds = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Shares | Bonds";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getsharesbonds';
+    const deleteParam = 'deletesharesbonds';
+    const updateParam = 'updatesharesbonds';
+    
+    const dataColumn = [
+        {
+          field: 'depositoryDetails',
+          headerName: 'Depository Details',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'dematAccNumber',
+          headerName: 'Demat Account Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'modeOfOperation',
+            headerName: 'Mode of Operation',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'nominee',
+          headerName: 'Nominee',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'company',
+            headerName: 'Company',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'numberOfShares',
+            headerName: 'Number Of Shares',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'dematStatementLocation',
+            headerName: 'Demat Satement Location',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +118,8 @@ const ShareBonds = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         shareBonds: [{
             depositoryDetails: '',
             dematAccNumber: '',
@@ -103,6 +175,7 @@ const ShareBonds = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Shares/Units/Debentures/Bonds</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
 
                     <Formik
@@ -129,6 +202,9 @@ const ShareBonds = () => {
                                                         <div className='childsInputs' key={`deposits-${index}`}>
                                                             <fieldset>
                                                                 <legend>{`Share/Bond-${index + 1}`}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='textarea' type='text' label='Depository Details' name={`shareBonds[${index}].depositoryDetails`} placeholder='Submit Depository Details' />
@@ -176,7 +252,7 @@ const ShareBonds = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

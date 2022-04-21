@@ -10,11 +10,76 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 
-const   FixedRecrDeposits = () => {
+const FixedRecrDeposits = () => {
 
     const [userRegister, setUserRegister] = useState({})
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Electric Water Meter";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getFixedRecurringDeposit';
+    const deleteParam = 'deleteFixedRecurringDeposit';
+    const updateParam = 'updateFixedRecurringDeposit';
+
+      
+    const dataColumn = [{
+          field: 'bankBranch',
+          headerName: 'Bank Branch',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'depositType',
+          headerName: 'Deposit Type',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'holderName',
+            headerName: 'Holder Name',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'nominee',
+          headerName: 'Nominee',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'depositDate',
+            headerName: 'Deposit Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'depositAmt',
+            headerName: 'Deposit Amount',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +113,8 @@ const   FixedRecrDeposits = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         fixedRecrDeposits: [{
             bankBranch: '',
             depositType: '',
@@ -84,6 +151,7 @@ const   FixedRecrDeposits = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Fixed/Recurring/Company Deposits</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -110,6 +178,9 @@ const   FixedRecrDeposits = () => {
                                                             <fieldset>
                                                                 <legend>{`Deposits-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='textarea' type='text' label='Bank and Branch Details' name={`fixedRecrDeposits[${index}].bankBranch`} placeholder='Submit Bank and Branch Name' />
                                                                     </Grid>
@@ -153,7 +224,7 @@ const   FixedRecrDeposits = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

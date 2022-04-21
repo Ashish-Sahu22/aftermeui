@@ -33,8 +33,10 @@ export default function Navbar() {
   };
 
   const log = () => {
-    localStorage.removeItem("userInfo")
-    navigate('login')        
+    localStorage.removeItem("session");
+    localStorage.removeItem("id");
+
+    navigate('login');        
   };
 
 

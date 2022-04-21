@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
+import GetList from '../userlist/GetList';
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -17,13 +18,108 @@ import Box from '@mui/material/Box';
 
 function VehicleInsurance() {
 
-    useEffect(() => {
-        document.title = "Registration";
-    }, [])
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
 
-    const [userRegister, setUserRegister] = useState({})
+    useEffect(() => {
+        document.title = "Vehicle Insurance";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getbankaccount';
+    const deleteParam = 'deletebankaccount';
+    const updateParam = 'updatebankaccount';
+    
+    const dataColumn = [{
+          field: 'year',
+          headerName: 'Year',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'insCompany',
+          headerName: 'Insurance Company',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'policyNo',
+            headerName: 'Policy No',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'agentName',
+          headerName: 'Agent Name',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'agentMob',
+            headerName: 'Agent Mobile',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'agentEmail',
+            headerName: 'Agent Email',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'sumInsured',
+            headerName: 'Sum Insured',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'noClaimBonus',
+            headerName: 'No Claim Bonus',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'policyStartDate',
+            headerName: 'Policy Start Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'policyDueDate',
+            headerName: 'Policy Due Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'premium',
+            headerName: 'Premium',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'remarks',
+            headerName: 'Remarks',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         name: '',
         vName: '',
         vDetails: [{
@@ -94,6 +190,7 @@ function VehicleInsurance() {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Vehicle Insurance Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -113,6 +210,9 @@ function VehicleInsurance() {
                                         <div className='childsInputs'>
                                             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }} style={{ marginBottom: '24px' }}>
                                                 <Grid item xs={12} sm={6}>
+                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                     <FormikControl control='input' type='text' label='Name/Vehicle' name='name' placeholder='Submit Name/Vehicle' />
                                                 </Grid>
                                                 <Grid item xs={12} sm={6}>
@@ -185,7 +285,7 @@ function VehicleInsurance() {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

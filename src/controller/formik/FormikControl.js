@@ -7,6 +7,8 @@ import Input from './Input';
 import PasswordInput from './PasswordInput';
 import Selectbox from './Select';
 import Textarea from './Textarea';
+import Hidden from './Hidden';
+import FileUpload from './FileUpload';
 
 
 function FormikControl(props) {
@@ -19,8 +21,10 @@ function FormikControl(props) {
         case 'password': return <PasswordInput {...rest}/>
         case 'radio':
         case 'checkbox': return <CheckBox {...rest} />
+        case 'hidden': return <Hidden {...rest} />
         // case 'dateinput': return <DateInput {...rest}/>
         case 'date': return <DateSelect {...rest}/>
+        case 'fileupload': return <FileUpload {...rest}/>
         default: return null
     }
 

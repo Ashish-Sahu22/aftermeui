@@ -10,10 +10,52 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 const DocLocation = () => {
 
     const [userRegister, setUserRegister] = useState({})
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Document Location";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, [])
+
+    const getParam = 'getdoclocations';
+    const deleteParam = 'deletedoclocation';
+    const updateParam = 'updatedoclocation';
+
+      
+    const dataColumn = [
+        {
+          field: 'docName',
+          headerName: 'Document',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'docLoc',
+          headerName: 'Location',
+          width: 110,
+          editable: true,
+        },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     const dropDownOption = [{
         docLoc: [{
@@ -64,6 +106,8 @@ const DocLocation = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         docLocation: [{
             docName: '',
             docLoc: '',
@@ -74,7 +118,7 @@ const DocLocation = () => {
         docLocation: Yup.array(Yup.object({
             docName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
             docLoc: Yup.string().required('Mandatory Field!').min(3, 'Invalid Value!'),
-        }))    
+        }))
         // docName: Yup.string().required('User Name is Mandatory Field!').min(5, 'Invalid User Name!'),
         // firstName: Yup.string().required('First Name is Mandatory Field!').min(3, 'Invalid First Name!'),
         // lastName: Yup.string().required('Last Name is Mandatory Field!').min(3, 'Invalid Last Name!'),
@@ -88,11 +132,11 @@ const DocLocation = () => {
 
     const onSubmit = async (values, onSubmitProps) => {
 
-        await axios.post("http://localhost:8080/afterme/api/adddoclocation", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://localhost:8080/afterme/api/adddoclocation",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -115,8 +159,9 @@ const DocLocation = () => {
     return (
         <div className='newUserWrap'>
             <div className='newUserForm'>
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Location Of Important Documents</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -143,6 +188,9 @@ const DocLocation = () => {
                                                             <fieldset>
                                                                 <legend>{`Document-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='select' type='select' label='Document Name' name={`docLocation[${index}].docName`} placeholder='Submit Document Name' options={dropDownOption[0].docLoc} />
                                                                     </Grid>
@@ -175,7 +223,7 @@ const DocLocation = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, IconButton, Typography,Paper } from '@mui/material';
+import { Button, Grid, IconButton, Typography, Paper } from '@mui/material';
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FormikControl from '../../controller/formik/FormikControl';
@@ -10,11 +10,22 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 
 const AmcsWarranty = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "AMC | Warranty";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, [])
 
     const dropDownOption = [{
         docLoc: [{
@@ -65,6 +76,8 @@ const AmcsWarranty = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         amcsWarranty: [{
             productsModel: '',
             company: '',
@@ -74,7 +87,63 @@ const AmcsWarranty = () => {
             amcRefNo: '',
             // remarks:'',
         }]
-    }
+    };
+
+    const getParam = 'getamcswarranties';
+    const deleteParam = 'updateamcswarranties';
+    const updateParam = 'deleteamcswarranties';
+
+      
+    const dataColumn = [{
+          field: 'productsModel',
+          headerName: 'Product Model',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'company',
+          headerName: 'Company',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'dateOfPurchase',
+            headerName: 'Purchase Date',
+            width: 110,
+            editable: true,
+            type: 'date',          
+        },
+        {
+          field: 'purchaseValue',
+          headerName: 'Purchase Value',
+          width: 110,
+          editable: true,
+          type: 'number'          
+        },
+        {
+            field: 'validUpto',
+            headerName: 'Valid Upto',
+            width: 110,
+            editable: true,
+            type: 'date',
+          },
+          {
+            field: 'amcRefNo',
+            headerName: 'AMC Ref No',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const validationSchema = Yup.object({
         amcsWarranty: Yup.array(Yup.object({
@@ -90,11 +159,11 @@ const AmcsWarranty = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addamcswarranties", 
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
+        await axios.post("http://localhost:8080/afterme/api/addamcswarranties",
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
         ).then(
             (response) => {
                 console.log("success", response);
@@ -118,18 +187,18 @@ const AmcsWarranty = () => {
         <div className='newUserWrap'>
             <div className='newUserForm'>
 
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
-                <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Amc's and Warranties</Typography>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                    <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Amc's and Warranties</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                    >
+                        {formik => {
+                            return <Form>
 
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                >
-                    {formik => {
-                        return <Form>
-
-                            {/* <fieldset>
+                                {/* <fieldset>
                                 <legend className='headingLegend'> <Typography variant='h5' color='primary'>Amc's & Warranties</Typography></legend> */}
 
                                 <div className='formInputs'>
@@ -145,6 +214,8 @@ const AmcsWarranty = () => {
                                                             <fieldset>
                                                                 <legend>{`Amcs and Warranties-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Product' name={`amcsWarranty[${index}].productsModel`} placeholder='Submit Product and Model' />
                                                                     </Grid>
@@ -158,7 +229,7 @@ const AmcsWarranty = () => {
                                                                         <FormikControl control='input' label='Purchase Value' name={`amcsWarranty[${index}].purchaseValue`} placeholder='Submit Purchase Value' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
-                                                                        <FormikControl control='input' label='Valid Upto' name={`amcsWarranty[${index}].validUpto`} placeholder='Submit Warranty/AMC valid upto' />
+                                                                        <FormikControl control='date' label='Valid Upto' name={`amcsWarranty[${index}].validUpto`} placeholder='Submit Warranty/AMC valid upto' />
                                                                     </Grid>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Reference No.' name={`amcsWarranty[${index}].amcRefNo`} placeholder='Submit AMC Reference Number' />
@@ -185,7 +256,7 @@ const AmcsWarranty = () => {
                                                         </div>
                                                     ))}
 
-                                                    <Button variant='contained' color='primary' style={{ minWidth: '90px', textAlign: 'center' }} onClick={() => push(initialValues.amcsWarranty[0])}>Add More</Button>
+                                                    <Button variant='contained' color='primary' style={{ minWidth: '90px', textAlign: 'center' }} onClick={() => push(initialValues.amcsWarranty[0])} >Add More</Button>
 
 
 
@@ -196,12 +267,12 @@ const AmcsWarranty = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
-                            {/* </fieldset> */}
-                        </Form>
-                    }
-                    }
-                </Formik>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
+                                {/* </fieldset> */}
+                            </Form>
+                        }
+                        }
+                    </Formik>
                 </Paper>
             </div>
         </div>

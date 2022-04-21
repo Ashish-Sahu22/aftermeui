@@ -10,11 +10,68 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const PANCardDetails = () => {
 
     const [userRegister, setUserRegister] = useState({})
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "PAN Card Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getPanCardDetails';
+    const deleteParam = 'deletePanCard';
+    const updateParam = 'updatePanCard';
+    
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'patriarch',
+          headerName: 'Patriarch',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'cardNo',
+            headerName: 'Card No',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'issueDate',
+          headerName: 'Issue Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'phoneNo',
+            headerName: 'Phone Number',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +105,8 @@ const PANCardDetails = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         panCard: [{
             name: '',
             patriarch: '',
@@ -58,17 +117,44 @@ const PANCardDetails = () => {
     }
 
     const validationSchema = Yup.object({
-        panCard: Yup.array(Yup.object({
-            name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
-            patriarch: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
-            cardNo: Yup.string().required('Mandatory Field!').matches(regex.pan, 'Invalid Input'),
-            issueDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-            phoneNo: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number'),
-            }))
+        // panCard: Yup.array(Yup.object({
+        //     name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+        //     patriarch: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
+        //     cardNo: Yup.string().required('Mandatory Field!').matches(regex.pan, 'Invalid Input'),
+        //     issueDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+        //     phoneNo: Yup.string().required('Mandatory Field!').matches(regex.mobile, 'Invalid Number'),
+        //     }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        const token = window.sessionStorage.getItem('token');
+        console.log('usertoken :',token)
+        await axios.post("http://1634-60-254-104-154.ngrok.io/afterme/api/addPanCard",
+        values,
+        { 
+            headers: {
+                "Content-Type":"application/json",
+                "token": token
+            } 
+        }
+    ).then(
+        (response) => {
+            console.log("success", response);
+            console.log("success", response.headers.token);
+            console.log("token", token);
+            // toast.success('Your Registration Successfully Done! ',{
+            //     position: toast.POSITION.TOP_CENTER,
+            // });             
+        }, (error) => {
+            console.log("error :", error);
+            console.log("success", error.headers.token);
+            console.log("token", token);
+            // toast.error('Something Went Wrong! Try Again Sometime!', {
+            //     position:toast.POSITION.TOP_CENTER})
+        }
+    )
         const data = JSON.stringify(values);
+        console.log("token", token);
         console.log(data);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
@@ -81,6 +167,7 @@ const PANCardDetails = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>PAN Card Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -106,6 +193,9 @@ const PANCardDetails = () => {
                                                         <div className='childsInputs' key={`panCard-${index}`}>
                                                             <fieldset>
                                                                 <legend>{`Card-${index + 1}`}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' type='text' label='Name' name={`panCard[${index}].name`} placeholder='Submit Card Holder Name' />
@@ -148,7 +238,7 @@ const PANCardDetails = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

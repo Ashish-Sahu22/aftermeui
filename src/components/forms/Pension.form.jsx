@@ -10,11 +10,86 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const PensionAccount = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Pension Details";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getpensionacc';
+    const deleteParam = 'deletepensionacc';
+    const updateParam = 'updatepensionacc';
+    
+    const dataColumn = [{
+          field: 'bankBranch',
+          headerName: 'Bank Branch',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'accountNo',
+          headerName: 'Account Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'operatingInstruction',
+            headerName: 'Operating Instruction',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'paymentNo',
+          headerName: 'Payment No',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'restorationDate',
+            headerName: 'Restoration Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'nominee',
+            headerName: 'Nominee',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'dueDateLife',
+            headerName: 'Due Date Life',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'sign',
+            headerName: 'Sign',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     // const dropDownOption=[{
     //     relation:[{
@@ -48,6 +123,8 @@ const PensionAccount = () => {
     // }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         pensionAcc: [{
             bankBranch: '',
             accountNo: '',
@@ -105,6 +182,7 @@ const PensionAccount = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Pension Accounts</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -130,6 +208,9 @@ const PensionAccount = () => {
                                                         <div className='childsInputs' key={`pensionAcc-${index}`}>
                                                             <fieldset>
                                                                 <legend>{`Account-${index + 1}`}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='textarea' label='Bank Details' name={`pensionAcc[${index}].bankBranch`} placeholder='Submit Bank and Branch Name' />
@@ -181,7 +262,7 @@ const PensionAccount = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

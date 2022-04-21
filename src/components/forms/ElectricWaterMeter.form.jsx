@@ -10,11 +10,77 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
+import GetList from '../userlist/GetList';
 
 
 const ElectricWaterMeter = () => {
 
-    const [userRegister, setUserRegister] = useState({})
+    const [userRegister, setUserRegister] = useState({});
+
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Electric Water Meter";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getElectricWaterMeterDetails';
+    const deleteParam = 'deleteElectricWaterMeter';
+    const updateParam = 'updateElectricWaterMeter';
+
+      
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'houseDetails',
+          headerName: 'House Details',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'meter',
+            headerName: 'Meter',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'meterNo',
+          headerName: 'Meter Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'customerNo',
+            headerName: 'Customer Number',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'depositAmt',
+            headerName: 'Deposit Amount',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
+
 
     const dropDownOption = [{
         meter: [{
@@ -29,6 +95,8 @@ const ElectricWaterMeter = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         electricWaterMeter: [{
             name: '',
             houseDetails: '',
@@ -43,12 +111,12 @@ const ElectricWaterMeter = () => {
         electricWaterMeter: Yup.array(Yup.object({
             name: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
             houseDetails: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
-            meter:  Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
+            meter: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
             meterNo: Yup.string().required('Mandatory Field!').min(5, 'Invalid Input!'),
             customerNo: Yup.string().required('Mandatory Field!').min(10, 'Invalid Input!'),
             depositAmt: Yup.string().required('Mandatory Field!').matches(regex.amount, "Invalid Input!"),
-        })) 
-        });
+        }))
+    });
 
 
 
@@ -64,6 +132,7 @@ const ElectricWaterMeter = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Electricity/Water Meter Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
                     <Formik
                         initialValues={initialValues}
@@ -89,6 +158,9 @@ const ElectricWaterMeter = () => {
                                                             <fieldset>
                                                                 <legend>{`Meter-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Name' name={`electricWaterMeter[${index}].name`} placeholder='Submit Name' />
                                                                     </Grid>
@@ -133,7 +205,7 @@ const ElectricWaterMeter = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

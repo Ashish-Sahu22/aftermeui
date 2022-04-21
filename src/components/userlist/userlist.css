@@ -1,0 +1,20 @@
+.userlistWrap{
+    flex: 7.4;
+    /* padding: 1rem; */
+    height: calc(95vh - 55px);
+}
+.userAvatar{
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+.userAvatarImg{
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.userAvatar Button{
+    margin: 0rem 0.5rem 0rem 0rem;
+}

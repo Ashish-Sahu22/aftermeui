@@ -10,13 +10,58 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
 
 const ImportantDates = () => {
 
     const [userRegister, setUserRegister] = useState({})
     const [monthData, setMonthData] = useState({ months });
 
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
+
+    useEffect(() => {
+        document.title = "Important Dates";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getImportantDateDetails';
+    const deleteParam = 'deleteImportantDate';
+    const updateParam = 'updateImportantDate';
+
+      
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'date',
+          headerName: 'Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'event',
+            headerName: 'Event',
+            width: 110,
+            editable: true,
+          },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const dropDownOption = [{
         meter: [{
@@ -31,6 +76,8 @@ const ImportantDates = () => {
     }]
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         eventdates: [{
             name: '',
             date: '',
@@ -84,6 +131,8 @@ const ImportantDates = () => {
                     months.map((monthData, monthindex, montharray) => (
                         <div key={monthindex}>
                             <Paper elevation={6} style={{ padding: 40, margin: '40px 10px 0px 10px' }}>
+                            <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+
                                 <Typography color='primary' variant='h5'>{monthData}</Typography>
                                 <Formik
                                     initialValues={initialValues}
@@ -110,6 +159,8 @@ const ImportantDates = () => {
                                                                             {/* <fieldset>
                                                                         <legend>{`${monthData}-${index + 1}`}</legend> */}
                                                                             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
+                                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
 
                                                                                 {/* <Grid item xs={12} sm={6} md={4}>
                                                                                 <FormikControl control='textarea' label='House Detail' name={`eventdates[${index}].houseDetails`} placeholder='Submit House Details' />
@@ -155,7 +206,7 @@ const ImportantDates = () => {
                                             </div>
 
 
-                                            <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
+                                            <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                             {/* </fieldset> */}
                                         </Form>
                                     }

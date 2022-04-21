@@ -11,6 +11,7 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import { margin, padding } from '@mui/system';
+import GetList from '../userlist/GetList';
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -18,13 +19,68 @@ import { margin, padding } from '@mui/system';
 
 function MedicalHistory() {
 
-    useEffect(() => {
-        document.title = "Registration";
-    }, [])
+    const [token, setToken] = useState('');
+    const [userId, setUserId] = useState();
 
-    const [userRegister, setUserRegister] = useState({})
+    useEffect(() => {
+        document.title = "Medical History";
+        const storageToken = window.sessionStorage.getItem('session');
+        const storageUserId = window.sessionStorage.getItem('id');
+        setToken(JSON.parse(storageToken));
+        setUserId(JSON.parse(storageUserId));
+    }, []);
+
+    const getParam = 'getMedical';
+    const deleteParam = 'deleteMedical';
+    const updateParam = 'updateMedical';
+
+      
+    const dataColumn = [{
+          field: 'vaccName',
+          headerName: 'Vaccination Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'vaccDate',
+          headerName: 'Vaccination Date',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'allergicMedicines',
+            headerName: 'Allergic Medicines',
+            width: 110,
+            editable: true,
+          },
+        {
+          field: 'metallicImplant',
+          headerName: 'Metallic Implant',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'lifeSaveMed',
+            headerName: 'Life Save Medicine',
+            width: 110,
+            editable: true,
+          },
+          
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const initialValues = {
+        sessionToken: '',
+        rId: '',
         me: [{
             vaccName: '',
             vaccDate: '',
@@ -49,30 +105,30 @@ function MedicalHistory() {
     }
 
     const validationSchema = Yup.object({
-        
+
         me: Yup.array(Yup.object({
             vaccName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             vaccDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
             allergicMedicines: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             metallicImplant: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             lifeSaveMed: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-           })),
-   
-           spouse: Yup.array(Yup.object({
-               vaccName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               vaccDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-               allergicMedicines: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               metallicImplant: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               lifeSaveMed: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-              })),
-   
-           childs: Yup.array(Yup.object({
-               vaccName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               vaccDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
-               allergicMedicines: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               metallicImplant: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-               lifeSaveMed: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
-              }))
+        })),
+
+        spouse: Yup.array(Yup.object({
+            vaccName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            vaccDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            allergicMedicines: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            metallicImplant: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            lifeSaveMed: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        })),
+
+        childs: Yup.array(Yup.object({
+            vaccName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            vaccDate: Yup.date().required('Mandatory Field!').typeError('Invalid Input!'),
+            allergicMedicines: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            metallicImplant: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+            lifeSaveMed: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
@@ -87,18 +143,19 @@ function MedicalHistory() {
     return (
         <div className='newUserWrap'>
             <div className='newUserForm'>
-            <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
+                <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Medical History Details</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
 
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                >
-                    {formik => {
-                        return <Form>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                    >
+                        {formik => {
+                            return <Form>
 
-                            {/* <fieldset>
+                                {/* <fieldset>
                                 <legend className='headingLegend'> <Typography variant='h5' color='primary'>Medical History</Typography></legend> */}
 
                                 <div className='formInputs'>
@@ -112,6 +169,9 @@ function MedicalHistory() {
                                                             <legend>{`Medical History-${index + 1}`}</legend>
                                                             <fieldset style={{ marginBottom: '24px', padding: '16px' }}>
                                                                 <legend>{"Vaccination"}</legend>
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
+
                                                                 <Grid container item spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }} xs={12}>
                                                                     <Grid item xs={12} sm={6} md={6}>
                                                                         <FormikControl control='input' type='text' label='Name' name={`me.[${index}].vaccName`} placeholder='Submit Name' />
@@ -251,19 +311,15 @@ function MedicalHistory() {
 
                                             </div>
                                         )}
-                                    </FieldArray>
+                                    </FieldArray>                                
+                                    </div>
 
-
-
-                                </div>
-
-
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
-                            {/* </fieldset> */}
-                        </Form>
-                    }
-                    }
-                </Formik>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
+                                {/* </fieldset> */}
+                            </Form>
+                        }
+                        }
+                    </Formik>
                 </Paper>
             </div>
 
