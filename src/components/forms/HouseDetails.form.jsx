@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const HouseDetails = () => {
 
@@ -26,65 +28,150 @@ const HouseDetails = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getHousePropertyDetails';
-    const deleteParam = 'deleteHouseProperty';
-    const updateParam = 'updateHouseProperty';
+    const getParam = 'getallhousepropertydetails';
+    const deleteParam = 'deletehouseproperty';
+    const updateParam = 'updatehouseproperty';
 
       
     const dataColumn = [{
-          field: 'accountName',
+          field: 'name',
           headerName: 'Account Name',
           width: 110,
           editable: true,
         },
         {
-          field: 'bankName',
+          field: 'detail',
           headerName: 'Bank Name',
           width: 110,
           editable: true,
         },
         {
-            field: 'accountNo',
+            field: 'howAcquired',
             headerName: 'Account No',
             width: 110,
             editable: true,
           },
         {
-          field: 'branch',
+          field: 'loanAmt',
           headerName: 'Branch',
           width: 110,
           editable: true,
         },
         {
-            field: 'ifscCode',
+            field: 'installment',
             headerName: 'Ifsc Code',
             width: 110,
             editable: true,
           },
           {
-            field: 'accountType',
+            field: 'registrationNo',
             headerName: 'Account Type',
             width: 110,
             editable: true,
           },
           {
-            field: 'operatingInst',
-            headerName: 'Operating Instruction',
+            field: 'shareCertificate',
+            headerName: 'Certificate',
             width: 110,
             editable: true,
           },
           {
-            field: 'nominee',
-            headerName: 'Nominee',
+            field: 'propertyCardNo',
+            headerName: 'Property Card Number',
             width: 110,
             editable: true,
           },
           {
-            field: 'specimenSign',
-            headerName: 'Specimen Sign',
+            field: 'houseTax.houseTaxPayable',
+            headerName: 'House Tax Payable',
             width: 110,
             editable: true,
           },
+          {
+            field: 'houseTax.censusNo',
+            headerName: 'Census Number',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseTax.propertyIdentificationNo',
+            headerName: 'Property Id Number',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseTax.constructionArea',
+            headerName: 'Construction Area',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseTax.dueDate',
+            headerName: 'Due Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceProp.insuranceCompany',
+            headerName: 'Insurance Company',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceProp.sumInsured',
+            headerName: 'Sum Insured',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceProp.premiumAmount',
+            headerName: 'Premium Amount',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceProp.policyRenewalDate',
+            headerName: 'Policy Renewal Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceProp.riskCovered',
+            headerName: 'Risk Covered',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceLifeOfBorrower.insuranceCompany',
+            headerName: 'Insurance Company',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceLifeOfBorrower.sumInsured',
+            headerName: 'Sum Insured',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceLifeOfBorrower.premiumAmount',
+            headerName: 'Premium Amount',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceLifeOfBorrower.policyRenewalDate',
+            headerName: 'Policy Renewal Date',
+            width: 110,
+            editable: true,
+          },
+          {
+            field: 'houseInsuranceLifeOfBorrower.riskCovered',
+            headerName: 'riskCovered',
+            width: 110,
+            editable: true,
+          },
+    
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -203,6 +290,23 @@ const HouseDetails = () => {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        await axios.post(`${base_url}/api/addhousepropertydetails`,
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                toast.success('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
+            }, (error) => {
+                console.log("error :", error);
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
+            }
+        )
         const data = JSON.stringify(values);
         console.log(data);
         onSubmitProps.setSubmitting(false);
@@ -331,7 +435,7 @@ const HouseDetails = () => {
                                                                 <Grid>
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 

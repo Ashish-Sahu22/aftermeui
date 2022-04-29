@@ -11,10 +11,9 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import { margin } from '@mui/system';
-
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
-// import { toast } from 'react-toastify';
-
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi'
 
 function UserRegistration() {
 
@@ -56,7 +55,7 @@ function UserRegistration() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/adduser", 
+        await axios.post(`${base_url}/api/adduser`, 
         values,
         // {
         //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -64,19 +63,20 @@ function UserRegistration() {
         ).then(
             (response) => {
                 console.log("success", response.data);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });  
+                toast.success('Your Registration Successfully Done! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });  
                 navigate('/login')           
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
         console.log(values);
         const data = JSON.stringify(values);
         console.log(values);
+        console.log(data);
         console.log(values.userName);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();

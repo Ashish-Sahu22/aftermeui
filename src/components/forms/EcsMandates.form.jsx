@@ -12,6 +12,8 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import { margin, padding } from '@mui/system';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -36,42 +38,68 @@ function EcsMandates() {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getEcsMandate';
-    const deleteParam = 'deleteEcsMandate';
-    const updateParam = 'updateEcsManadate';
+    const getParam = 'getallecsmandate';
+    const deleteParam = 'deleteecsmandate';
+    const updateParam = 'updateecsmanadate';
 
-      
+
     const dataColumn = [{
-          field: 'ecsFavour',
-          headerName: 'ECS Favour',
-          width: 110,
-          editable: true,
-        },
-        {
-          field: 'amtPeriodicity',
-          headerName: 'Amount Periodicity',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'debitAccDetails',
-            headerName: 'DebitAccount Details',
-            width: 110,
-            editable: true,
-        },
-        {
-            field: 'startDate',
-            headerName: 'Start Date',
-            width: 110,
-            editable: true,
-        },
-        {
-            field: 'endDate',
-            headerName: 'End Date',
-            width: 110,
-            editable: true,
-        },
-        
+        field: 'ecsFavour',
+        headerName: 'ECS Favour',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'amtPeriodicity',
+        headerName: 'Amount Periodicity',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'debitAccDetails',
+        headerName: 'Account No | Branch',
+        width: 250,
+        editable: false,
+        // valueFormatter: ({ value }) => value.bankBranch
+        // renderCell: (params) => {
+        //     return (<>
+        //     <div className="rowitem">
+        //         {params.row.debitAccDetails.accountNo}
+        //         </div>
+        //         <div className="rowitem">
+        //         {params.row.debitAccDetails.bankBranch}
+        //         </div>
+        //     </>);
+        //   },
+        valueGetter: (params) => {
+            console.log({ params });
+            let result = [];
+            if (params.row.debitAccDetails) {
+                if (params.row.debitAccDetails.bankBranch) {
+                    result.push(params.row.debitAccDetails.accountNo);
+                }
+                if (params.row.debitAccDetails.accountNo) {
+                    result.push(params.row.debitAccDetails.bankBranch);
+                }
+            } else {
+                result = ["Unknown"];
+            }
+            return result.join(" | ");
+        }
+    },
+    {
+        field: 'startDate',
+        headerName: 'Start Date',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'endDate',
+        headerName: 'End Date',
+        width: 110,
+        editable: true,
+    },
+
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -81,8 +109,8 @@ function EcsMandates() {
         //   valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         // },
-        
-      ];
+
+    ];
 
     const initialValues = {
         sessionToken: '',
@@ -102,7 +130,7 @@ function EcsMandates() {
     const validationSchema = Yup.object({
         ecs: Yup.array(Yup.object({
             ecsFavour: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
-            amtPeriodicity: Yup.string().required('Mandatory Field!').min(15, 'Invalid Number!'),
+            amtPeriodicity: Yup.string().required('Mandatory Field!').min(5, 'Invalid Number!'),
             debitAccDetails: Yup.object({
                 bankBranch: Yup.string().required('Mandatory Field!').min(15, 'Invalid Input!'),
                 accountNo: Yup.string().required('Mandatory Field!').matches(regex.bankAccountNo, 'Invalid Account Number!'),
@@ -113,6 +141,23 @@ function EcsMandates() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        await axios.post(`${base_url}/api/addecsmandate`,
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                toast.success('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
+            }, (error) => {
+                console.log("error :", error);
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
+            }
+        )
         const data = JSON.stringify(values);
         console.log(values);
         console.log(data);
@@ -121,13 +166,12 @@ function EcsMandates() {
         onSubmitProps.resetForm();
     };
 
-
     return (
-        <div className='newUserWrap'>
-            <div className='newUserForm'>
+        <div className='newUserForm'>
+            <div className='newUserWrap'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>ECS Mandates Tables</Typography>
-                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
 
                     <Formik
                         initialValues={initialValues}
@@ -179,7 +223,7 @@ function EcsMandates() {
                                                                 </Grid>
                                                                 {
                                                                     array.length > 1 &&
-                                                                    <Grid item xs={12} sm={12} md={6}>
+                                                                    <Grid item xs={12} sm={12} md={12}>
 
                                                                         <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => ArrayHelpers.remove(index)}>Remove</Button>
 

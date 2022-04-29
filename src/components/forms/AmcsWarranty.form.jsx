@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, IconButton, Typography, Paper } from '@mui/material';
+import { Button, Grid, IconButton, Typography, Paper, CircularProgress } from '@mui/material';
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FormikControl from '../../controller/formik/FormikControl';
@@ -11,7 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
-
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const AmcsWarranty = () => {
 
@@ -90,8 +91,8 @@ const AmcsWarranty = () => {
     };
 
     const getParam = 'getamcswarranties';
-    const deleteParam = 'updateamcswarranties';
-    const updateParam = 'deleteamcswarranties';
+    const deleteParam = 'deleteamcswarranties';
+    const updateParam = 'updateamcswarranties';
 
       
     const dataColumn = [{
@@ -159,7 +160,7 @@ const AmcsWarranty = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addamcswarranties",
+        await axios.post(`${base_url}/api/addamcswarranties`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -167,18 +168,18 @@ const AmcsWarranty = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });             
+                toast.info('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 
         const data = JSON.stringify(values);
-        console.log(values);
+        console.log(data);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
     };
@@ -244,10 +245,7 @@ const AmcsWarranty = () => {
                                                                     {
                                                                         array.length > 1 &&
                                                                         <Grid item xs={12} sm={12} md={12}>
-
-
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
-
                                                                         </Grid>
                                                                     }
                                                                 </Grid>
@@ -265,9 +263,21 @@ const AmcsWarranty = () => {
                                         }}
                                     </FieldArray>
                                 </div>
+                                <Button
+                                    type='submit'
+                                    style={{ textAlign: 'center', margin: '8px 0px' }}
+                                    variant='contained'
+                                    color='primary'
+                                    startIcon={formik.isSubmitting ? <CircularProgress size='1rem' /> : undefined}
+                                    disabled={!formik.isValid || formik.isSubmitting}
+                                    onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}
+                                    >
+                                    {formik.isSubmitting ? 'Submitting' : 'Submit'}
+                   
+                                </Button>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
+                                {/* <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button> */}
                                 {/* </fieldset> */}
                             </Form>
                         }

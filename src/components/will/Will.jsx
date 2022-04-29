@@ -17,11 +17,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import '../../controller/formik/DateSelect.css'
 import { DatePicker, DateTimePicker, TimePicker } from 'formik-mui-lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-
-
-
+import base_url from '../../constant/Bootapi'
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function Will() {
@@ -82,23 +80,23 @@ function Will() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        // await axios.get("http://fc12-103-105-96-121.ngrok.io/CrudOpr/registerProcess", 
-        // values,
-        // // {
-        // //     headers:{"Access-Control-Allow-Origin": "*"}
-        // // }
-        // ).then(
-        //     (response) => {
-        //         console.log("success", response);
-        //         // toast.success('Your Registration Successfully Done! ',{
-        //         //     position: toast.POSITION.TOP_CENTER,
-        //         // });             
-        //     }, (error) => {
-        //         console.log("error :", error);
-        //         // toast.error('Something Went Wrong! Try Again Sometime!', {
-        //         //     position:toast.POSITION.TOP_CENTER})
-        //     }
-        // )
+        await axios.get(`${base_url}/api/registerProcess`, 
+        values,
+        // {
+        //     headers:{"Access-Control-Allow-Origin": "*"}
+        // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                toast.success('Details Submited Successfully!',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
+            }, (error) => {
+                console.log("error :", error);
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
+            }
+        )
         const data = JSON.stringify(values);
         console.log(data);
         console.log(values.userName);

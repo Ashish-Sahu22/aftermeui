@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Button, Grid, IconButton, Paper, Typography, CircularProgress } from '@mui/material';
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FormikControl from '../../controller/formik/FormikControl';
@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 
 const AccidentInsurance = () => {
@@ -90,53 +92,53 @@ const AccidentInsurance = () => {
     }
 
 
-    const getParam = 'getaccidentinsurance';
+    const getParam = 'getaccidentinsurances';
     const deleteParam = 'deleteaccidentinsurance';
     const updateParam = 'updateaccidentinsurance';
 
-      
+
     const dataColumn = [{
-          field: 'insuredName',
-          headerName: 'Insured Name',
-          width: 110,
-          editable: true,
-        },
-        {
-          field: 'insuranceCompany',
-          headerName: 'Company',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'sumInsured',
-            headerName: 'Sum Insured',
-            width: 110,
-            editable: true,
-          },
-        {
-          field: 'risksCovered',
-          headerName: 'Risks Covered',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'policyPeriod',
-            headerName: 'Policy Period',
-            width: 110,
-            editable: true,
-          },
-          {
-            field: 'premium',
-            headerName: 'Premium',
-            width: 110,
-            editable: true,
-          },
-          {
-            field: 'remarks',
-            headerName: 'Remarks',
-            width: 110,
-            editable: true,
-          },
+        field: 'insuredName',
+        headerName: 'Insured Name',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'insuranceCompany',
+        headerName: 'Company',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'sumInsured',
+        headerName: 'Sum Insured',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'risksCovered',
+        headerName: 'Risks Covered',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'policyPeriod',
+        headerName: 'Policy Period',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'premium',
+        headerName: 'Premium',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'remarks',
+        headerName: 'Remarks',
+        width: 110,
+        editable: true,
+    },
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -146,8 +148,8 @@ const AccidentInsurance = () => {
         //   valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         // },
-        
-      ];
+
+    ];
 
     const validationSchema = Yup.object({
         accidentInsurance: Yup.array(Yup.object({
@@ -164,7 +166,7 @@ const AccidentInsurance = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addaccidentinsurance",
+        await axios.post(`${base_url}/api/addaccidentinsurance`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -172,13 +174,13 @@ const AccidentInsurance = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });             
+                toast.info('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 
@@ -193,7 +195,7 @@ const AccidentInsurance = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Personal Accident Insurance Details</Typography>
-                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>    
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -218,7 +220,7 @@ const AccidentInsurance = () => {
                                                             <fieldset>
                                                                 <legend>{`Insurance-${index + 1}`}</legend>
                                                                 <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
-                                                                <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                                                    <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
                                                                     <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                                                     <Grid item xs={12} sm={6} md={4}>
                                                                         <FormikControl control='input' label='Name of Insured(s)' name={`accidentInsurance[${index}].insuredName`} placeholder='Submit Name of Insured(s)' />
@@ -248,7 +250,7 @@ const AccidentInsurance = () => {
 
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 
                                                                         </Grid>
@@ -266,9 +268,20 @@ const AccidentInsurance = () => {
                                         }}
                                     </FieldArray>
                                 </div>
+                                <Button
+                                    type='submit'
+                                    style={{ textAlign: 'center', margin: '8px 0px' }}
+                                    variant='contained'
+                                    color='primary'
+                                    startIcon={formik.isSubmitting ? <CircularProgress size='1rem' /> : undefined}
+                                    disabled={!formik.isValid || formik.isSubmitting}
+                                    onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}
+                                    >
+                                    {formik.isSubmitting ? 'Submitting' : 'Submit'}
+                   
+                                </Button>
 
-
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }}>Submit</Button>
+                                {/* <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button> */}
                                 {/* </fieldset> */}
                             </Form>
                         }

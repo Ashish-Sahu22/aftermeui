@@ -10,7 +10,9 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
-
+import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const AadharCard = () => {
 
@@ -24,7 +26,50 @@ const AadharCard = () => {
         const storageUserId = window.sessionStorage.getItem('id');
         setToken(JSON.parse(storageToken));
         setUserId(JSON.parse(storageUserId));
-    }, [])
+    }, []);
+
+    
+    const getParam = 'getaadharcards';
+    const deleteParam = 'deleteaadharcard';
+    const updateParam = 'updateaadharcard';
+
+      
+    const dataColumn = [{
+          field: 'name',
+          headerName: 'Name',
+          width: 110,
+          editable: true,
+        },
+        {
+          field: 'aadharNo',
+          headerName: 'Aadhar Number',
+          width: 110,
+          editable: true,
+        },
+        {
+            field: 'issueDate',
+            headerName: 'Issue Date',
+            width: 110,
+            editable: true,
+            type: 'date',
+          },
+        {
+          field: 'phoneNo',
+          headerName: 'Phone Number',
+          width: 110,
+          editable: true,
+        },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+        
+      ];
 
     const checkboxOption = [{
         attorneyExecutedFor: [{
@@ -64,22 +109,22 @@ const AadharCard = () => {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addaadharcard",
+        await axios.post(`${base_url}/api/addaadharcard`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
             // }
         ).then((response) => {
             console.log("success", response);
-            // toast.success('Your Registration Successfully Done! ',{
-            //     position: toast.POSITION.TOP_CENTER,
-            // });       
+            toast.success('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });   
             // setError(response);
         }, (error) => {
             console.log("error :", error);
             // setError(error.data);
-            // toast.error('Something Went Wrong! Try Again Sometime!', {
-            //     position:toast.POSITION.TOP_CENTER})
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
         }
         )
         const data = JSON.stringify(values);
@@ -94,6 +139,7 @@ const AadharCard = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Aadhar Card</Typography>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>    
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}

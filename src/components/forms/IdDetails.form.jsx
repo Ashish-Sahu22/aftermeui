@@ -11,6 +11,9 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
+
 
 const IdDetails = () => {
 
@@ -27,9 +30,9 @@ const IdDetails = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getbankaccount';
-    const deleteParam = 'deleteDocument';
-    const updateParam = 'getDocument';
+    const getParam = 'getalldocument';
+    const deleteParam = 'deletedocument';
+    const updateParam = 'updatedocument';
 
       
     const dataColumn = [{
@@ -154,22 +157,22 @@ const IdDetails = () => {
     const onSubmit = async (values, onSubmitProps) => {
         const formData = new FormData();
         formData.append('file', values.file)
-        await axios.post("http://0fbb-60-254-104-154.ngrok.io/afterme/api/addDocument",
+        await axios.post(`${base_url}/api/adddocument`,
         formData,
         // {
         //     headers:{"Access-Control-Allow-Origin": "*"}
         // }
     ).then((response) => {
         console.log("success", response);
-        // toast.success('Your Registration Successfully Done! ',{
-        //     position: toast.POSITION.TOP_CENTER,
-        // });       
+        toast.success('Details Submited Successfully! ',{
+            position: toast.POSITION.TOP_CENTER,
+        });       
         // setError(response);
     }, (error) => {
         console.log("error :", error);
         // setError(error.data);
-        // toast.error('Something Went Wrong! Try Again Sometime!', {
-        //     position:toast.POSITION.TOP_CENTER})
+        toast.error('Something Went Wrong! Try Again Sometime!', {
+            position:toast.POSITION.TOP_CENTER})
     }
     )
         // const data = JSON.stringify(values);
@@ -246,7 +249,7 @@ const IdDetails = () => {
                                                                     </Grid>
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 

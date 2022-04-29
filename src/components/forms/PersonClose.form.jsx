@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const PersonClose = () => {
 
@@ -26,7 +28,7 @@ const PersonClose = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getclosetome';
+    const getParam = 'getallclosetome';
     const deleteParam = 'deleteclosetome';
     const updateParam = 'updateclosetome';
     
@@ -41,7 +43,7 @@ const PersonClose = () => {
           field: 'relation',
           headerName: 'Relation',
           width: 110,
-          editable: true,
+          editable: false,
         },
         {
             field: 'address',
@@ -128,7 +130,7 @@ const PersonClose = () => {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addclosetome",
+        await axios.post(`${base_url}/api/addclosetome`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -136,13 +138,13 @@ const PersonClose = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });             
+                toast.info('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });             
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 
@@ -208,7 +210,7 @@ const PersonClose = () => {
 
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 

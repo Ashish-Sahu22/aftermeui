@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const TradingAccount = () => {
 
@@ -26,58 +28,58 @@ const TradingAccount = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getOnlineTrading';
-    const deleteParam = 'deleteOnline';
-    const updateParam = 'updateOnline';
-    
+    const getParam = 'getonlinetradings';
+    const deleteParam = 'deletetrading';
+    const updateParam = 'updatetrading';
+
     const dataColumn = [{
-          field: 'vendorName',
-          headerName: 'Vendor Name',
-          width: 110,
-          editable: true,
-        },
-        {
-          field: 'nsdlCsdl',
-          headerName: 'NSDL CSDL',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'accountNo',
-            headerName: 'Account No',
-            width: 110,
-            editable: true,
-          },
-        {
-          field: 'bankAccount',
-          headerName: 'Bank Account',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'depositoryParticipant',
-            headerName: 'Depository Participant',
-            width: 110,
-            editable: true,
-          },
-          {
-            field: 'userId',
-            headerName: 'User Id',
-            width: 110,
-            editable: true,
-          },
-          {
-            field: 'password',
-            headerName: 'Password',
-            width: 110,
-            editable: true,
-          },
-          {
-            field: 'remarks',
-            headerName: 'Remarks',
-            width: 110,
-            editable: true,
-          },
+        field: 'vendorName',
+        headerName: 'Vendor Name',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'nsdlCsdl',
+        headerName: 'NSDL CSDL',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'accountNo',
+        headerName: 'Account No',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'bankAccount',
+        headerName: 'Bank Account',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'depositoryParticipant',
+        headerName: 'Depository Participant',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'userId',
+        headerName: 'User Id',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'password',
+        headerName: 'Password',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'remarks',
+        headerName: 'Remarks',
+        width: 110,
+        editable: true,
+    },
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -87,8 +89,8 @@ const TradingAccount = () => {
         //   valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         // },
-        
-      ];
+
+    ];
 
 
     // const dropDownOption=[{
@@ -142,15 +144,33 @@ const TradingAccount = () => {
             vendorName: Yup.string().required('Mandatory Field!').min(3, 'Invalid Name!'),
             nsdlCsdl: Yup.string().required('Mandatory Field!').min(3, 'Invalid Input!'),
             accountNo: Yup.string().required('Mandatory Field!').matches(regex.bankAccountNo, 'Invalid Input'),
-            bankAccount: Yup.string().required('Mandatory Field!').min(5,"Invalid Input"),
-            depositoryParticipant: Yup.string().required('Mandatory Field!').min(3,"Invalid Input"),
-            userId: Yup.string().required('Mandatory Field!').min(3,"Invalid Input"),
+            bankAccount: Yup.string().required('Mandatory Field!').min(5, "Invalid Input"),
+            depositoryParticipant: Yup.string().required('Mandatory Field!').min(3, "Invalid Input"),
+            userId: Yup.string().required('Mandatory Field!').min(3, "Invalid Input"),
             password: Yup.string().required('Mandatory Field!').min(4, 'Invalid Password'),
             remarks: Yup.string().required('Mandatory Field!').min(6, 'Invalid Input'),
-            }))
+        }))
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        await axios.post(`${base_url}/api/addonlinetrading`,
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then((response) => {
+            console.log("success", response);
+            toast.success('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });   
+            // setError(response);
+        }, (error) => {
+            console.log("error :", error);
+            // setError(error.data);
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
+        }
+        )
         const data = JSON.stringify(values);
         console.log(data);
         console.log(values);
@@ -164,7 +184,7 @@ const TradingAccount = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Online Trading Accounts Details</Typography>
-                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
 
                     <Formik
                         initialValues={initialValues}
@@ -220,7 +240,7 @@ const TradingAccount = () => {
                                                                     </Grid>
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 
@@ -243,7 +263,7 @@ const TradingAccount = () => {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId);}}>Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}>Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

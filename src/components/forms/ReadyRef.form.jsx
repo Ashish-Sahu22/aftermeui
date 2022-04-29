@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const ReadyRef = () => {
 
@@ -26,9 +28,9 @@ const ReadyRef = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getReference';
-    const deleteParam = 'deleteReference';
-    const updateParam = 'updateReference';
+    const getParam = 'getallreference';
+    const deleteParam = 'deletereference';
+    const updateParam = 'updatereference';
     
     const dataColumn = [{
           field: 'reference',
@@ -130,7 +132,7 @@ const ReadyRef = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://b9b7-2405-201-401c-11a0-583d-f43c-45a3-e181.ngrok.io/afterme/api/addReference1",
+        await axios.post(`${base_url}/api/addreference`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -138,13 +140,13 @@ const ReadyRef = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });             
+                toast.info('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });               
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 
@@ -211,7 +213,7 @@ const ReadyRef = () => {
                                                                     </Grid>
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 
@@ -246,9 +248,11 @@ const ReadyRef = () => {
                                     variant='contained'
                                     color='primary'
                                     startIcon={formik.isSubmitting ? <CircularProgress size='1rem' /> : undefined}
-                                    disabled={!formik.isValid || formik.isSubmitting}>
-                                    {formik.isSubmitting ? 'Submitting' : 'Submit'}
+                                    disabled={!formik.isValid || formik.isSubmitting}
                                     onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }}
+                                    >
+                                    {formik.isSubmitting ? 'Submitting' : 'Submit'}
+                   
                                 </Button>
                                 {/* </fieldset> */}
                             </Form>
@@ -258,7 +262,6 @@ const ReadyRef = () => {
                 </Paper>
             </div>
         </div>
-
     )
 }
 

@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const PANCardDetails = () => {
 
@@ -26,9 +28,9 @@ const PANCardDetails = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getPanCardDetails';
-    const deleteParam = 'deletePanCard';
-    const updateParam = 'updatePanCard';
+    const getParam = 'getallpancarddetails';
+    const deleteParam = 'deletepancard';
+    const updateParam = 'updatepancard';
     
     const dataColumn = [{
           field: 'name',
@@ -129,32 +131,27 @@ const PANCardDetails = () => {
     const onSubmit = async (values, onSubmitProps) => {
         const token = window.sessionStorage.getItem('token');
         console.log('usertoken :',token)
-        await axios.post("http://1634-60-254-104-154.ngrok.io/afterme/api/addPanCard",
+        await axios.post(`${base_url}/api/addpancard`,
         values,
-        { 
-            headers: {
-                "Content-Type":"application/json",
-                "token": token
-            } 
-        }
+        // { 
+        //     headers: {
+        //         "Content-Type":"application/json",
+        //         "token": token
+        //     } 
+        // }
     ).then(
         (response) => {
             console.log("success", response);
-            console.log("success", response.headers.token);
-            console.log("token", token);
-            // toast.success('Your Registration Successfully Done! ',{
-            //     position: toast.POSITION.TOP_CENTER,
-            // });             
+            toast.info('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });             
         }, (error) => {
             console.log("error :", error);
-            console.log("success", error.headers.token);
-            console.log("token", token);
-            // toast.error('Something Went Wrong! Try Again Sometime!', {
-            //     position:toast.POSITION.TOP_CENTER})
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
         }
     )
         const data = JSON.stringify(values);
-        console.log("token", token);
         console.log(data);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
@@ -215,7 +212,7 @@ const PANCardDetails = () => {
 
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 

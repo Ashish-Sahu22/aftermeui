@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const BankAccount = () => {
 
@@ -24,70 +26,71 @@ const BankAccount = () => {
     useEffect(() => {
         document.title = "Bank Account";
         const storageToken = window.sessionStorage.getItem('session');
-        const storageUserId = localStorage.getItem('id'); 
+        const storageUserId = localStorage.getItem('id');
         setToken(JSON.parse(storageToken));
-        setUserId(JSON.parse(storageUserId));  
+        setUserId(JSON.parse(storageUserId));
     }, [])
-    
-    const getParam = 'getbankaccount';
+
+    const getParam = 'getbankaccounts';
     const deleteParam = 'deletebankaccount';
     const updateParam = 'updatebankaccount';
 
-      
-    const dataColumn = [{
-          field: 'accountName',
-          headerName: 'Account Name',
-          width: 110,
-          editable: true,
+
+    const dataColumn = [
+        {
+            field: 'accountName',
+            headerName: 'Account Name',
+            width: 110,
+            editable: true,
         },
         {
-          field: 'bankName',
-          headerName: 'Bank Name',
-          width: 110,
-          editable: true,
+            field: 'bankName',
+            headerName: 'Bank Name',
+            width: 110,
+            editable: true,
         },
         {
             field: 'accountNo',
             headerName: 'Account No',
             width: 110,
             editable: true,
-          },
+        },
         {
-          field: 'branch',
-          headerName: 'Branch',
-          width: 110,
-          editable: true,
+            field: 'branch',
+            headerName: 'Branch',
+            width: 110,
+            editable: true,
         },
         {
             field: 'ifscCode',
             headerName: 'Ifsc Code',
             width: 110,
             editable: true,
-          },
-          {
+        },
+        {
             field: 'accountType',
             headerName: 'Account Type',
             width: 110,
             editable: true,
-          },
-          {
+        },
+        {
             field: 'operatingInst',
             headerName: 'Operating Instruction',
             width: 110,
             editable: true,
-          },
-          {
+        },
+        {
             field: 'nominee',
             headerName: 'Nominee',
             width: 110,
             editable: true,
-          },
-          {
+        },
+        {
             field: 'specimenSign',
             headerName: 'Specimen Sign',
             width: 110,
             editable: true,
-          },
+        },
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -97,11 +100,11 @@ const BankAccount = () => {
         //   valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         // },
-        
-      ];
 
-    
-      
+    ];
+
+
+
     const dropDownOption = [{
         docLoc: [{
             val: 'personalWill',
@@ -183,7 +186,7 @@ const BankAccount = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addbankaccount",
+        await axios.post(`${base_url}/api/addbankaccount`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -191,13 +194,13 @@ const BankAccount = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });             
+                toast.info('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                }); 
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 
@@ -214,7 +217,7 @@ const BankAccount = () => {
 
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>Bank Accounts Details</Typography>
-                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
 
                     <Formik
                         initialValues={initialValues}
@@ -278,7 +281,7 @@ const BankAccount = () => {
                                                                     </Grid> */}
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 
                                                                         </Grid>

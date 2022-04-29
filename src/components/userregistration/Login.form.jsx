@@ -11,10 +11,9 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import { height, margin } from '@mui/system';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-
-
+import base_url from '../../constant/Bootapi'
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function Login() {
@@ -55,7 +54,7 @@ function Login() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/loginUser" ,
+        await axios.post(`${base_url}/api/loginUser` ,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -66,9 +65,9 @@ function Login() {
             localStorage.setItem("id", JSON.stringify(response.data[1]));
             window.sessionStorage.setItem('session', JSON.stringify(response.data[0]));
             window.sessionStorage.setItem('id', JSON.stringify(response.data[1]));       
-            // toast.success('Your Registration Successfully Done! ',{
-            //     position: toast.POSITION.TOP_CENTER,
-            // });       
+            toast.success('Welcome! Your Login Successfully',{
+                position: toast.POSITION.TOP_CENTER,
+            });       
             // setError(response);
             navigate("/");
         }, (error) => {
@@ -76,8 +75,8 @@ function Login() {
             setError(error.response.data);
             window.sessionStorage.setItem("error", error);
             // setError(error.data);
-            // toast.error('Something Went Wrong! Try Again Sometime!', {
-            //     position:toast.POSITION.TOP_CENTER})
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
         }
         )
         const data = JSON.stringify(values);

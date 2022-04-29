@@ -12,6 +12,8 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import { margin, padding } from '@mui/system';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -30,9 +32,9 @@ function MedicalHistory() {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getMedical';
-    const deleteParam = 'deleteMedical';
-    const updateParam = 'updateMedical';
+    const getParam = 'getallmedical';
+    const deleteParam = 'deletemedical';
+    const updateParam = 'updatemedical';
 
       
     const dataColumn = [{
@@ -132,6 +134,25 @@ function MedicalHistory() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
+        await axios.post(`${base_url}/api/addmedical`,
+        values,
+        // {
+        //     headers:{"Access-Control-Allow-Origin": "*"}
+        // }
+    ).then(
+        (response) => {
+            console.log("success", response);
+            toast.success('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });             
+        }, (error) => {
+            console.log("error :", error);
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
+        }
+    )
+
+        
         const data = JSON.stringify(values);
         console.log(data);
         console.log(values);
@@ -293,7 +314,7 @@ function MedicalHistory() {
                                                                 </Grid>
                                                                 {
                                                                     array.length > 1 &&
-                                                                    <Grid item xs={12} sm={12} md={6}>
+                                                                    <Grid item xs={12} sm={12} md={12}>
 
                                                                         <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => ArrayHelpers.remove(index)}>Remove</Button>
 

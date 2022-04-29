@@ -6,23 +6,11 @@
         "icon":"AppRegistrationSharpIcon" 
     },
     {
-        "id": 2,
-        "link": "medicalhistory",
-        "text": "Medical History",
-        "icon": "AppRegistrationSharpIcon"
-    },
-    {
         "id": 3,
         "link": "readyref",
         "text": "Ready Reference",
         "icon":"AppRegistrationSharpIcon"
-    },
-    {
-        "id": 4,
-        "link": "iddetails",
-        "text": "Id Details",
-        "icon": "AppRegistrationSharpIcon"
-    },
+    },    
     {
         "id": 5,
         "link": "doclocation",
@@ -34,13 +22,7 @@
         "link": "insurancedetails",
         "text": "Insurance Details",
         "icon": "AppRegistrationSharpIcon"
-    },
-    {
-        "id": 7,
-        "link": "vehicleinsurance",
-        "text": "Vehicle Insurance",
-        "icon": "AppRegistrationSharpIcon"
-    },
+    }, 
     {
         "id": 8,
         "link": "medpolicydetails",
@@ -71,12 +53,7 @@
         "text": "Bank Accounts",
         "icon": "AppRegistrationSharpIcon"
     },
-    {
-        "id": 14,
-        "link": "ecsmandates",
-        "text": "ECS Mandates Table",
-        "icon": "AppRegistrationSharpIcon"
-    },
+   
     {
         "id": 15,
         "link": "loandetails",
@@ -203,12 +180,7 @@
         "text": "Ration-Card Details",
         "icon": "AppRegistrationSharpIcon"
     },
-    {
-        "id": 36,
-        "link": "aadharcard",
-        "text": "Aadhar Card Details",
-        "icon": "AppRegistrationSharpIcon"
-    },
+   
     {
         "id": 37,
         "link": "electioncard",
@@ -221,24 +193,14 @@
         "text": "Income Tax Details",
         "icon": "AppRegistrationSharpIcon"
     },
-    {
-        "id": 39,
-        "link": "housedetails",
-        "text": "House Details",
-        "icon": "AppRegistrationSharpIcon"
-    },
+   
     {
         "id": 40,
         "link": "importantdates",
         "text": "Important Dates",
         "icon": "AppRegistrationSharpIcon"
     },
-    {
-        "id": 41,
-        "link": "will",
-        "text": "Will Details",
-        "icon": "AppRegistrationSharpIcon"
-    },
+  
     {
         "id": 65,
         "link": "admin",

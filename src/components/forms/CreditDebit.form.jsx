@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const CreditDebit = () => {
 
@@ -40,7 +42,7 @@ const CreditDebit = () => {
 
     }]
 
-    const getParam = 'getcrdr';
+    const getParam = 'getcrdrs';
     const deleteParam = 'deletecrdr';
     const updateParam = 'updatecrdr';
     
@@ -67,12 +69,14 @@ const CreditDebit = () => {
           headerName: 'Date',
           width: 110,
           editable: true,
+          type: 'dateTime',
         },
         {
             field: 'dueDate',
             headerName: 'Due Date',
             width: 110,
             editable: true,
+            type: 'dateTime',
           },
           {
             field: 'inttRate',
@@ -110,7 +114,7 @@ const CreditDebit = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addcrdr",
+        await axios.post(`${base_url}/api/addcrdr`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
@@ -118,14 +122,14 @@ const CreditDebit = () => {
         ).then(
             (response) => {
                 console.log("success", response);
-                // toast.success('Your Registration Successfully Done! ',{
-                //     position: toast.POSITION.TOP_CENTER,
-                // });  
+                toast.success('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });  
                 // navigate('/login')           
             }, (error) => {
                 console.log("error :", error);
-                // toast.error('Something Went Wrong! Try Again Sometime!', {
-                //     position:toast.POSITION.TOP_CENTER})
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
             }
         )
 

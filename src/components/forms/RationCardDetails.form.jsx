@@ -11,6 +11,8 @@ import axios from 'axios';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const RationCardDetails = () => {
 
@@ -26,7 +28,7 @@ const RationCardDetails = () => {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getrationcard';
+    const getParam = 'getrationcards';
     const deleteParam = 'deleterationcard';
     const updateParam = 'updaterationcard';
     
@@ -128,22 +130,22 @@ const RationCardDetails = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post("http://localhost:8080/afterme/api/addrationcard",
+        await axios.post(`${base_url}/api/addrationcard`,
             values,
             // {
             //     headers:{"Access-Control-Allow-Origin": "*"}
             // }
         ).then((response) => {
             console.log("success", response);
-            // toast.success('Your Registration Successfully Done! ',{
-            //     position: toast.POSITION.TOP_CENTER,
-            // });       
+            toast.success('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });       
             // setError(response);
         }, (error) => {
             console.log("error :", error);
             // setError(error.data);
-            // toast.error('Something Went Wrong! Try Again Sometime!', {
-            //     position:toast.POSITION.TOP_CENTER})
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
         }
         )
 
@@ -207,7 +209,7 @@ const RationCardDetails = () => {
 
                                                                     {
                                                                         array.length > 1 &&
-                                                                        <Grid item xs={12} sm={12} md={4}>
+                                                                        <Grid item xs={12} sm={12} md={12}>
 
                                                                             <Button variant='outlined' color='error' style={{ minWidth: '90px', margin: 'auto', float: 'right' }} onClick={() => remove(index)}>Remove</Button>
 

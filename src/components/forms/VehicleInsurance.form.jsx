@@ -11,6 +11,9 @@ import '../new-user/newuser.css';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import GetList from '../userlist/GetList';
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
+
 
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 // import { toast } from 'react-toastify';
@@ -29,9 +32,9 @@ function VehicleInsurance() {
         setUserId(JSON.parse(storageUserId));
     }, []);
 
-    const getParam = 'getbankaccount';
-    const deleteParam = 'deletebankaccount';
-    const updateParam = 'updatebankaccount';
+    const getParam = 'getvehicledetails';
+    const deleteParam = 'deletevehicle';
+    const updateParam = 'updatevehicle';
     
     const dataColumn = [{
           field: 'year',
@@ -159,23 +162,23 @@ function VehicleInsurance() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        // await axios.post("http://a011-2405-201-401c-11a0-5c9-9804-e2c9-df50.ngrok.io/afterme/api/addSelf",
-        //     values,
-        //     // {
-        //     //     headers:{"Access-Control-Allow-Origin": "*"}
-        //     // }
-        // ).then(
-        //     (response) => {
-        //         console.log("success", response);
-        //         // toast.success('Your Registration Successfully Done! ',{
-        //         //     position: toast.POSITION.TOP_CENTER,
-        //         // });             
-        //     }, (error) => {
-        //         console.log("error :", error);
-        //         // toast.error('Something Went Wrong! Try Again Sometime!', {
-        //         //     position:toast.POSITION.TOP_CENTER})
-        //     }
-        // )
+        await axios.post(`${base_url}/api/addvehicle`,
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                toast.success('Details Submited Successfully! ',{
+                    position: toast.POSITION.TOP_CENTER,
+                });              
+            }, (error) => {
+                console.log("error :", error);
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position:toast.POSITION.TOP_CENTER})
+            }
+        )
 
         const data = JSON.stringify(values);
         console.log(data);
@@ -213,7 +216,7 @@ function VehicleInsurance() {
                                                 <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
                                                                 <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
 
-                                                    <FormikControl control='input' type='text' label='Name/Vehicle' name='name' placeholder='Submit Name/Vehicle' />
+                                                    <FormikControl control='input' type='text' label='Name' name='name' placeholder='Submit Owner Name' />
                                                 </Grid>
                                                 <Grid item xs={12} sm={6}>
                                                     <FormikControl control='input' type='text' label='Vehicle Name' name='vName' placeholder='Submit Vehicle Name' />

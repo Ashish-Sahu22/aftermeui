@@ -117,7 +117,7 @@ const Sidebar = () => {
                     </DrawerItem>
                 </Link>
                 <Divider />
-                <SimpleBar style={{ maxHeight: 260 }} ref={ref}>                
+                <SimpleBar style={{ maxHeight: 290 }} ref={ref}>                
                 {NavData.map((data, index) => (
                     <Link to={data.link} style={{ textDecoration: "none" }}>
                         <DrawerItem>

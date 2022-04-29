@@ -12,7 +12,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuItem from '@mui/material/MenuItem';
 import { padding } from '@mui/system';
 import GetList from '../userlist/GetList';
-
+import { toast } from 'react-toastify';
+import base_url from '../../constant/Bootapi';
 
 const DebtLiabilities = () => {
 
@@ -28,9 +29,9 @@ const DebtLiabilities = () => {
         setUserId(JSON.parse(storageUserId));
     }, [])
 
-    const getParam = 'getDebitLiabilityDetails';
-    const deleteParam = 'deleteDebitLiabilityMapping';
-    const updateParam = 'updateDebitLiabilityMapping';
+    const getParam = 'getalldebitliability';
+    const deleteParam = 'deletedebitliability';
+    const updateParam = 'updatedebitliability';
 
       
     const dataColumn = [{
@@ -100,7 +101,25 @@ const DebtLiabilities = () => {
 
 
     const onSubmit = async (values, onSubmitProps) => {
+        await axios.post(`${base_url}/api/adddebitliability`,
+        values,
+        // {
+        //     headers:{"Access-Control-Allow-Origin": "*"}
+        // }
+    ).then(
+        (response) => {
+            console.log("success", response);
+            toast.success('Details Submited Successfully! ',{
+                position: toast.POSITION.TOP_CENTER,
+            });             
+        }, (error) => {
+            console.log("error :", error);
+            toast.error('Something Went Wrong! Try Again Sometime!', {
+                position:toast.POSITION.TOP_CENTER})
+        }
+    )   
         const data = JSON.stringify(values);
+        console.log(values);
         console.log(data);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
