@@ -89,12 +89,14 @@ const CreditCardDetails = () => {
           headerName: 'Valid From',
           width: 110,
           editable: true,
+          type: 'date',
         },
         {
             field: 'validThru',
             headerName: 'Valid Through',
             width: 110,
             editable: true,
+            type: 'date',
           },
         // {
         //   field: 'fullName',

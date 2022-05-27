@@ -33,26 +33,25 @@ const DebtLiabilities = () => {
     const deleteParam = 'deletedebitliability';
     const updateParam = 'updatedebitliability';
 
-      
     const dataColumn = [{
-          field: 'name',
-          headerName: 'Name',
-          width: 110,
-          editable: true,
-        },
-        {
-          field: 'accountNo',
-          headerName: 'Account Number',
-          width: 110,
-          editable: true,
-        },
-        {
-            field: 'bank',
-            headerName: 'Bank',
-            width: 110,
-            editable: true,
-          },
-        
+        field: 'name',
+        headerName: 'Name',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'accountNo',
+        headerName: 'Account Number',
+        width: 110,
+        editable: true,
+    },
+    {
+        field: 'bank',
+        headerName: 'Bank',
+        width: 110,
+        editable: true,
+    },
+
         // {
         //   field: 'fullName',
         //   headerName: 'Full name',
@@ -62,8 +61,8 @@ const DebtLiabilities = () => {
         //   valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         // },
-        
-      ];
+
+    ];
 
     const dropDownOption = [{
         crDrType: [{
@@ -102,22 +101,23 @@ const DebtLiabilities = () => {
 
     const onSubmit = async (values, onSubmitProps) => {
         await axios.post(`${base_url}/api/adddebitliability`,
-        values,
-        // {
-        //     headers:{"Access-Control-Allow-Origin": "*"}
-        // }
-    ).then(
-        (response) => {
-            console.log("success", response);
-            toast.success('Details Submited Successfully! ',{
-                position: toast.POSITION.TOP_CENTER,
-            });             
-        }, (error) => {
-            console.log("error :", error);
-            toast.error('Something Went Wrong! Try Again Sometime!', {
-                position:toast.POSITION.TOP_CENTER})
-        }
-    )   
+            values,
+            // {
+            //     headers:{"Access-Control-Allow-Origin": "*"}
+            // }
+        ).then(
+            (response) => {
+                console.log("success", response);
+                toast.success('Details Submited Successfully! ', {
+                    position: toast.POSITION.TOP_CENTER,
+                });
+            }, (error) => {
+                console.log("error :", error);
+                toast.error('Something Went Wrong! Try Again Sometime!', {
+                    position: toast.POSITION.TOP_CENTER
+                })
+            }
+        )
         const data = JSON.stringify(values);
         console.log(values);
         console.log(data);
@@ -130,8 +130,8 @@ const DebtLiabilities = () => {
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>My Debt/Liabilities</Typography>
-                    
-                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn}/>
+
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}

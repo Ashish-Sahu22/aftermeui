@@ -2,6 +2,9 @@
   text-align: center;
 } */
 
+a{
+  text-decoration: none;
+}
 /* .divcont{
   display: flex;
   background-color: DodgerBlue;

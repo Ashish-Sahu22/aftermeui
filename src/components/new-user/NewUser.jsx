@@ -13,14 +13,13 @@ import Box from '@mui/material/Box';
 import base_url from '../../constant/Bootapi'
 // import { GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { toast } from 'react-toastify';
-
+import GetList from '../userlist/GetList';
 
 function NewUser() {
 
     const [userRegister, setUserRegister] = useState({})
     const [token, setToken] = useState('');
     const [userId, setUserId] = useState();
-
 
     useEffect(() => {
         document.title = "Registration";
@@ -30,13 +29,266 @@ function NewUser() {
         setUserId(JSON.parse(storageUserId));
     }, [])
 
-
     // const authAxios = axios.create({
     //     baseURL: 'http://1634-60-254-104-154.ngrok.io/afterme/api/',
     //     headers: {
     //         "token" : token,
     //     }
     // })
+
+    const getParam = 'getallchild';
+    const deleteParam = 'deletechild';
+    const updateParam = 'updatechild';
+
+    const getParams = 'getallselfnew';
+    const deleteParams = 'deleteself';
+    const updateParams = 'updateself';
+
+    const getParamsp = 'getallspouse';
+    const deleteParamsp = 'deletespouse';
+    const updateParamsp = 'updatespouse';
+
+    const dataColumn = [
+        {
+            field: 'name',
+            headerName: 'Name',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'dob',
+            headerName: 'Dob',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'tob',
+            headerName: 'Time of Birth',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'pob',
+            headerName: 'Place of Birth',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'anniversary',
+            headerName: 'Anniversary',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'mobNumber',
+            headerName: 'Mobile Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'email',
+            headerName: 'Email Id',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'bloodGroup',
+            headerName: 'Blood Group',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'emergency',
+            headerName: 'Emergency Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'organization',
+            headerName: 'Organization',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'qualification',
+            headerName: 'Qualification',
+            width: 110,
+            editable: true,
+        },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+    ];
+
+    const dataColumns = [
+        {
+            field: 'userName',
+            headerName: 'Name',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userDob',
+            headerName: 'Date of Birth',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'userTob',
+            headerName: 'Time of Birth',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userPob',
+            headerName: 'Place of Birth',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userAnniversary',
+            headerName: 'Anniversary',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'userMobNumber',
+            headerName: 'Mobile Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userEmail',
+            headerName: 'Email Id',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userBloodGroup',
+            headerName: 'Blood Group',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userEmergency',
+            headerName: 'Emergency Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userOrganization',
+            headerName: 'Organization',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'userQualification',
+            headerName: 'Qualification',
+            width: 110,
+            editable: true,
+        },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+    ];
+
+    
+    const dataColumnsp = [
+        {
+            field: 'spouseName',
+            headerName: 'Name',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseDob',
+            headerName: 'Dob',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'spouseTob',
+            headerName: 'Time of Birth',
+            width: 110,
+            editable: true,
+            type: 'datetime'
+        },
+        {
+            field: 'spousePob',
+            headerName: 'Place of Birth',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseAnniversary',
+            headerName: 'Anniversary',
+            width: 110,
+            editable: true,
+            type: 'date',
+        },
+        {
+            field: 'spouseMobNumber',
+            headerName: 'Mobile Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseEmail',
+            headerName: 'Email Id',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseBloodGroup',
+            headerName: 'Blood Group',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseEmergency',
+            headerName: 'Emergency Number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseOrganization',
+            headerName: 'Organization',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'spouseQualification',
+            headerName: 'Qualification',
+            width: 110,
+            editable: true,
+        },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // },
+    ];
 
     const initialValues = {
         sessionToken: '',
@@ -121,19 +373,20 @@ function NewUser() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.post(`${base_url}/api/addSelf`, values
+        await axios.post(`${base_url}/api/addself`, values
         ).then(
             (response) => {
                 console.log("success", response);
                 // console.log("success", response.headers.token);
-                toast.success('Your Registration Successfully Done! ',{
+                toast.success('Your Registration Successfully Done! ', {
                     position: toast.POSITION.TOP_CENTER,
-                });             
+                });
             }, (error) => {
                 console.log("error :", error);
                 // console.log("success", error.headers.token);
                 toast.error('Something Went Wrong! Try Again Sometime!', {
-                    position:toast.POSITION.TOP_CENTER})
+                    position: toast.POSITION.TOP_CENTER
+                })
             }
         )
 
@@ -143,16 +396,16 @@ function NewUser() {
         console.log('usertoken :', token);
         onSubmitProps.setSubmitting(false);
         onSubmitProps.resetForm();
-
     };
-
 
     return (
         <div className='newUserWrap'>
             <div className='newUserForm'>
                 <Paper elevation={6} style={{ padding: 50, margin: 20 }}>
                     <Typography color='primary' sx={{ textAlign: 'center', marginBottom: '30px' }} variant='h4'>My Family Should Know</Typography>
-
+                    <GetList getParam={getParams} updateParam={updateParams} deleteParam={deleteParams} dataColumn={dataColumns} />
+                    <GetList getParam={getParamsp} updateParam={updateParamsp} deleteParam={deleteParamsp} dataColumn={dataColumnsp} />
+                    <GetList getParam={getParam} updateParam={updateParam} deleteParam={deleteParam} dataColumn={dataColumn} />
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -169,8 +422,8 @@ function NewUser() {
                                     <fieldset>
                                         <legend> Me</legend>
                                         <div className='formInput'>
-                                            <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token}/>
-                                            <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId}/>
+                                            <FormikControl control='hidden' type='hidden' label='Name' name='sessionToken' defaultValue={token} values={token} value={token} />
+                                            <FormikControl control='hidden' type='hidden' label='Name' name='rId' defaultValue={userId} values={userId} value={userId} />
                                             <Grid container spacing={{ xs: 2, md: 3 }} sx={{ alignItems: 'center' }}>
                                                 <Grid item xs={12} sm={6} md={3}>
                                                     <FormikControl control='input' type='text' label='Name' name='userName' placeholder='Submit Name' />
@@ -197,7 +450,7 @@ function NewUser() {
                                                     <FormikControl control='input' type='text' label='Blood Group' name='userBloodGroup' placeholder='Submit Blood Group' />
                                                 </Grid>
                                                 <Grid item xs={12} sm={6} md={3}>
-                                                    <FormikControl control='textarea' label='Emergency Contact' name='userEmergency' placeholder='Please Enter Emergency Contact Person Name and Number' />
+                                                    <FormikControl control='input' type='text' label='Emergency Contact' name='userEmergency' placeholder='Please Enter Emergency Contact Person Name and Number' />
                                                 </Grid>
                                                 <Grid item xs={12} sm={6} md={3}>
                                                     <FormikControl control='textarea' label='Organization Details' name='userOrganization' placeholder='Please Enter Organization Details with Contact Number' />
@@ -330,7 +583,7 @@ function NewUser() {
                                 </div>
 
 
-                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => {formik.setFieldValue("sessionToken", token);formik.setFieldValue("rId", userId); }} >Submit</Button>
+                                <Button type='submit' style={{ textAlign: 'center', margin: '8px 0px' }} variant='contained' color='primary' disabled={!formik.isValid || formik.isSubmitting} onClick={() => { formik.setFieldValue("sessionToken", token); formik.setFieldValue("rId", userId); }} >Submit</Button>
                                 {/* </fieldset> */}
                             </Form>
                         }

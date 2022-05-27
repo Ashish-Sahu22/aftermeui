@@ -6,7 +6,6 @@ import "./footer.css"
 
 const Footer = () => {
     const colorblue = blue[100];
-
     return (
         <div className='footer'>
             <Divider />

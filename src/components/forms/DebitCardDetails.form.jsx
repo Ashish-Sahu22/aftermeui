@@ -88,6 +88,7 @@ const DebitCardDetails = () => {
           headerName: 'Issue Date',
           width: 110,
           editable: true,
+          type: 'date',
         },
         {
             field: 'validThru',

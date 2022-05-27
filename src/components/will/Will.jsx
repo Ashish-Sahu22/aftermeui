@@ -80,7 +80,7 @@ function Will() {
     });
 
     const onSubmit = async (values, onSubmitProps) => {
-        await axios.get(`${base_url}/api/registerProcess`, 
+        await axios.get(`${base_url}/api/addwillattorney`, 
         values,
         // {
         //     headers:{"Access-Control-Allow-Origin": "*"}

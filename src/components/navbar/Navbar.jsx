@@ -11,8 +11,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 
-
-
 const settings = ['Profile', 'Account', 'Dashboard'];
 
 export default function Navbar() {

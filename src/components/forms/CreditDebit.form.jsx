@@ -39,7 +39,6 @@ const CreditDebit = () => {
             key: 'Dr',
         },
         ],
-
     }]
 
     const getParam = 'getcrdrs';

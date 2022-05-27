@@ -31,7 +31,6 @@ const LoanDetails = () => {
     const getParam = 'getloanaccounts';
     const deleteParam = 'deleteloanaccount';
     const updateParam = 'updateloanaccount';
-
       
     const dataColumn = [{
           field: 'loanType',
@@ -233,8 +232,6 @@ const LoanDetails = () => {
                                                     ))}
 
                                                     <Button variant='contained' color='primary' style={{ minWidth: '90px', textAlign: 'center' }} onClick={() => push(initialValues.loanDetails[0])}>Add More</Button>
-
-
 
                                                 </div>
                                             )

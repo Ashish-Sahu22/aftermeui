@@ -126,6 +126,7 @@ const AccidentInsurance = () => {
         headerName: 'Policy Period',
         width: 110,
         editable: true,
+        type: 'date',
     },
     {
         field: 'premium',
