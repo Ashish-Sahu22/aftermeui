@@ -61,9 +61,9 @@ function Routing() {
         <Route path="userregistration" element={<UserRegistration />} />
         <Route path="login" element={<Login />} />
 
-        <Route path="/" element={<Main />}>
+        <Route path="/after" element={<Main />}>
           <Route index element={<Home />} />
-          <Route path="userdetails" element={<NewUser />} />
+          <Route path="/userdetails" element={<NewUser />} />
           <Route path="medicalhistory" element={<MedicalHistory />} />
           <Route path="personclose" element={<PersonClose />} />
           <Route path="readyref" element={<ReadyRef />} />

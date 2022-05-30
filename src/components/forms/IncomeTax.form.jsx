@@ -39,6 +39,7 @@ const IncomeTax = () => {
           headerName: 'Assessment Year',
           width: 110,
           editable: true,
+          type: 'date',
         },
         {
           field: 'grossIncome',
@@ -51,19 +52,22 @@ const IncomeTax = () => {
             headerName: 'Last Return Filed',
             width: 110,
             editable: true,
+            type: 'date',
           },
         {
           field: 'assessmentDone',
           headerName: 'Assessment Done',
           width: 110,
           editable: true,
+          type: 'date',
         },
         {
             field: 'refundAmountDue',
             headerName: 'Refund Amount Due',
             width: 110,
             editable: true,
-          },
+            type: 'date',
+        },
          
         // {
         //   field: 'fullName',

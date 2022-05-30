@@ -64,6 +64,7 @@ const IdDetails = () => {
             headerName: 'Expiry Date',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'file',

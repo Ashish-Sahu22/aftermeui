@@ -95,6 +95,7 @@ const DebitCardDetails = () => {
             headerName: 'Valid Through',
             width: 110,
             editable: true,
+            type: 'date',
           },
         // {
         //   field: 'fullName',

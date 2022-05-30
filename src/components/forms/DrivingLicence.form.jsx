@@ -56,18 +56,21 @@ const DrivingLicence = () => {
           headerName: 'Issue Date',
           width: 110,
           editable: true,
+          type: 'date',
         },
         {
             field: 'validFrom',
             headerName: 'Valid From',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'validTill',
             headerName: 'Valid Till',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'remarksBloodGroup',

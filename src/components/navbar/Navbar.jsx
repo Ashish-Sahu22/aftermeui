@@ -9,7 +9,10 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import base_url from '../../constant/Bootapi'
 
 const settings = ['Profile', 'Account', 'Dashboard'];
 
@@ -30,9 +33,38 @@ export default function Navbar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const log = () => {
+  const log = async () => {
     localStorage.removeItem("session");
     localStorage.removeItem("id");
+    window.sessionStorage.removeItem('session');
+    window.sessionStorage.removeItem('id');
+
+    await axios.post(`${base_url}/api/logoutUser`,
+    // {
+    //     headers:{"Access-Control-Allow-Origin": "*"}
+    // }
+).then((response) => {
+    console.log("success", response);
+      localStorage.removeItem("session");
+      localStorage.removeItem("id");
+      window.sessionStorage.removeItem('session');
+      window.sessionStorage.removeItem('id'); 
+    toast.success('Log Out Successfully',{
+        position: toast.POSITION.TOP_CENTER,
+    });
+           
+    
+    // setError(response);
+    navigate("login");
+}, (error) => {
+    console.log("error :", error);
+    // setError(error.response.data);
+    window.sessionStorage.setItem("error", error);
+    // setError(error.data);
+    toast.error('Something Went Wrong! Try Again!', {
+        position:toast.POSITION.TOP_CENTER})
+}
+)
 
     navigate('login');        
   };

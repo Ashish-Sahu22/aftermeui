@@ -134,6 +134,7 @@ const HouseDetails = () => {
             headerName: 'Policy Renewal Date',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'houseInsuranceProp.riskCovered',
@@ -164,6 +165,7 @@ const HouseDetails = () => {
             headerName: 'Policy Renewal Date',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'houseInsuranceLifeOfBorrower.riskCovered',

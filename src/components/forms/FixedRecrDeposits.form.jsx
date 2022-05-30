@@ -63,6 +63,7 @@ const FixedRecrDeposits = () => {
             headerName: 'Deposit Date',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'depositAmt',

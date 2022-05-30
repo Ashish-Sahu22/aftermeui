@@ -63,6 +63,7 @@ const FireInsurance = () => {
             headerName: 'Issue Maturity Date',
             width: 110,
             editable: true,
+            type: 'date',
           },
           {
             field: 'premium',
